@@ -68,6 +68,7 @@ public class Application extends AppCompatActivity implements MapboxMap.OnMapCli
     @SuppressLint("LogNotTimber")
     public void renderUserComponents(Activity activity)
     {
+        Mapbox.getInstance(activity.getBaseContext(), TOKEN);
 
         /* Set Services Initialised */
         services = (Services) new Services(TAG, activity);
@@ -102,12 +103,12 @@ public class Application extends AppCompatActivity implements MapboxMap.OnMapCli
 
         /* Render User Components */
         Application.this.renderUserComponents(Application.this);
+
+        this.renderMapView(this, savedInstanceState);
     }
 
     public void renderMapView(Activity activity, Bundle bundle)
     {
-        Mapbox.getInstance(activity.getBaseContext(), TOKEN);
-
         /* Render Layout Components */
         this.mapView = (MapView) activity.findViewById(R.id.mapView);
         this.mapView.onCreate(bundle);
