@@ -1,10 +1,15 @@
 package my.com.johnmelody.emergenciesresponsedemo;
 
+import static com.mapbox.core.constants.Constants.PRECISION_6;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineCap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationListener;
@@ -21,8 +26,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.mapbox.api.directions.v5.DirectionsCriteria;
+import com.mapbox.api.directions.v5.MapboxDirections;
+import com.mapbox.api.directions.v5.models.DirectionsResponse;
+import com.mapbox.api.directions.v5.models.DirectionsRoute;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.FeatureCollection;
+import com.mapbox.geojson.LineString;
+import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.layers.LineLayer;
+import com.mapbox.mapboxsdk.style.layers.Property;
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mapbox.mapboxsdk.utils.BitmapUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,15 +52,37 @@ import java.util.Objects;
 import my.com.johnmelody.emergenciesresponsedemo.Constants.ConstantsValues;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.Services;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.Util;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineCap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
 public class Application extends AppCompatActivity implements LocationListener
 {
     public static final String TAG = ConstantsValues.TAG_NAME;
+    private static final String ROUTE_LAYER_ID = "route-layer-id";
+    private static final String ROUTE_SOURCE_ID = "route-source-id";
+    private static final String ICON_LAYER_ID = "icon-layer-id";
+    private static final String ICON_SOURCE_ID = "icon-source-id";
+    private static final String RED_PIN_ICON_ID = "red-pin-icon-id";
     public static final int REQUEST_LOCATION = 0x1;
     protected LocationManager locationManager;
-    private MapView mapView;
+    private MapboxDirections mapboxDirectionsClient;
+    private DirectionsRoute currentRoute;
+    private Point user;
+    private Point help;
+    public MapView mapView;
     public Services services;
     public Util util;
+
 
     public void initializeLocationService()
     {
@@ -63,9 +106,11 @@ public class Application extends AppCompatActivity implements LocationListener
         services = (Services) new Services(TAG, activity);
         util = (Util) new Util();
 
-        /* Request READ_PHONE_STATE permission */
-        this.util.requestSecurityPermission(activity); /* Refer https://stackoverflow
-        .com/q/70803660/10758321 */
+        /*
+         * Request READ_PHONE_STATE permission
+         * Refer https://stackoverflow.com/q/70803660/10758321
+         */
+        this.util.requestSecurityPermission(activity);
 
         /* Set Action Bar To White Colour */
         Objects.requireNonNull(this.getSupportActionBar()).setBackgroundDrawable(
@@ -92,7 +137,7 @@ public class Application extends AppCompatActivity implements LocationListener
         super.onCreate(savedInstanceState);
 
         /* Initialise Mapbox Services */
-        Mapbox.getInstance(this, this.getResources().getString(R.string.mapbox_token));
+        Mapbox.getInstance(this, ConstantsValues.MAPBOX_TOKEN(this));
 
         /* Set Layout Content View  */
         Application.this.setContentView(R.layout.activity_main);
@@ -102,10 +147,94 @@ public class Application extends AppCompatActivity implements LocationListener
 
         /* Set MapView to Instances of the current activity */
         Application.this.mapView = (MapView) this.findViewById(R.id.mapview);
-        //Application.this.mapView.onCreate(savedInstanceState);
+        Application.this.mapView.onCreate(savedInstanceState);
+        Application.this.mapView.getMapAsync(new OnMapReadyCallback()
+        {
+            @Override
+            public void onMapReady(@NonNull MapboxMap mapboxMap)
+            {
+                mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded()
+                {
+                    @Override
+                    public void onStyleLoaded(@NonNull Style style)
+                    {
+                        Application.this.user = Point.fromLngLat(
+                                Application.this.services.getCurrentUserLocation()[0],
+                                Application.this.services.getCurrentUserLocation()[1]
+                        );
+
+                        /* TODO Change this to HTTP_REQUEST coordinates from the server side*/
+                        Application.this.help = Point.fromLngLat(
+                                Application.this.services.getCurrentUserLocation()[0] - 0x1.0p0,
+                                Application.this.services.getCurrentUserLocation()[1] - 0x1.0p0
+                        );
+
+                        /* Render sources and Fixtures */
+                        Application.this.initiateSource(style);
+                    }
+                });
+            }
+        });
 
         /* Initialise Location Services */
         Application.this.initializeLocationService();
+    }
+
+    public void initiateSource(@NonNull Style loadMapStyle)
+    {
+        loadMapStyle.addSource(new GeoJsonSource(ROUTE_SOURCE_ID));
+
+        GeoJsonSource iconOfGeoJsonSource = new GeoJsonSource(
+                ICON_SOURCE_ID,
+                FeatureCollection.fromFeatures(
+                        new Feature[]{
+                                Feature.fromGeometry(
+                                        Point.fromLngLat(
+                                                Application.this.user.longitude(),
+                                                Application.this.user.latitude()
+                                        )
+                                ),
+                                Feature.fromGeometry(
+                                        Point.fromLngLat(
+                                                Application.this.help.longitude(),
+                                                Application.this.help.latitude()
+                                        )
+                                )
+                        }
+                )
+        );
+
+        loadMapStyle.addSource(iconOfGeoJsonSource);
+    }
+
+    public void initiateLayers(@NonNull Style loadedMapStyle)
+    {
+        LineLayer routeLayer = new LineLayer(ROUTE_LAYER_ID, ROUTE_SOURCE_ID);
+
+        /* Add the LineLayer to the map. This layer will display the directions route. */
+        routeLayer.setProperties(
+                lineCap(Property.LINE_CAP_ROUND),
+                lineJoin(Property.LINE_JOIN_ROUND),
+                lineWidth(5f),
+                lineColor(Color.parseColor("#009688"))
+        );
+        loadedMapStyle.addLayer(routeLayer);
+
+        /* Add the red marker icon image to the map */
+        loadedMapStyle.addImage(
+                RED_PIN_ICON_ID,
+                Objects.requireNonNull(
+                        BitmapUtils.getBitmapFromDrawable(getResources().getDrawable(R.drawable.red_marker))
+                )
+        );
+
+        /* Add the red marker icon SymbolLayer to the map */
+        loadedMapStyle.addLayer(new SymbolLayer(ICON_LAYER_ID, ICON_SOURCE_ID).withProperties(
+                iconImage(RED_PIN_ICON_ID),
+                iconIgnorePlacement(true),
+                iconAllowOverlap(true),
+                iconOffset(new Float[]{0f, -9f})
+        ));
     }
 
     @Override
@@ -153,4 +282,154 @@ public class Application extends AppCompatActivity implements LocationListener
     {
         /* Do Nothing */
     }
+
+    public void getRoute(MapboxMap mapboxMap, Point origin, Point destination)
+    {
+        this.mapboxDirectionsClient = MapboxDirections
+                .builder()
+                .origin(origin)
+                .destination(destination)
+                .overview(DirectionsCriteria.OVERVIEW_FULL)
+                .profile(DirectionsCriteria.PROFILE_DRIVING)
+                .accessToken(ConstantsValues.MAPBOX_TOKEN(this.getApplicationContext()))
+                .build();
+
+        this.mapboxDirectionsClient.enqueueCall(new Callback<DirectionsResponse>()
+        {
+            @Override
+            public void onResponse(Call<DirectionsResponse> call,
+                                   Response<DirectionsResponse> response)
+            {
+                Log.d(TAG, String.format("onResponse: %d", response.code()));
+
+                if (response.body() == null)
+                {
+                    Application.this.util.showToast(
+                            Application.this.getApplicationContext(),
+                            "The Access Token Invalid"
+                    );
+                }
+                else if (response.body().routes().size() < 1)
+                {
+                    Application.this.util.showToast(
+                            Application.this.getApplicationContext(),
+                            "No route found"
+                    );
+                }
+                else
+                {
+                    /* Get Directions route */
+                    Application.this.currentRoute = response.body().routes().get(0);
+
+                    /* Display Toast output of the distance */
+                    Application.this.util.showToast(
+                            Application.this.getApplicationContext(),
+                            String.format(
+                                    "The Distance%s",
+                                    Application.this.currentRoute.distance()
+                            )
+                    );
+
+                    if (mapboxMap == null)
+                    {
+                        Log.d(TAG, "onResponse::map == null");
+                    }
+
+                    mapboxMap.getStyle(new Style.OnStyleLoaded()
+                    {
+                        @Override
+                        public void onStyleLoaded(@NonNull Style style)
+                        {
+                            /*
+                             * Retrieve and update the source designated for showing the
+                             * directions route
+                             */
+                            GeoJsonSource source = style.getSourceAs(ROUTE_SOURCE_ID);
+
+                            /*
+                             * Create a LineString with the directions route's geometry and reset
+                             * the GeoJSON source for the route LineLayer source
+                             */
+                            if (source != null)
+                            {
+                                source.setGeoJson(
+                                        LineString.fromPolyline(
+                                                currentRoute.geometry(),
+                                                PRECISION_6
+                                        )
+                                );
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DirectionsResponse> call, Throwable t)
+            {
+                Application.this.util.showToast(
+                        Application.this.getApplicationContext(),
+                        t.getMessage()
+                );
+
+                Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        this.mapView.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        /* Cancel the Directions API request*/
+        if (this.mapboxDirectionsClient != null)
+        {
+            this.mapboxDirectionsClient.cancelCall();
+        }
+
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory()
+    {
+        super.onLowMemory();
+        this.mapView.onLowMemory();
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        this.mapView.onResume();
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        this.mapView.onStart();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        this.mapView.onStop();
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        this.mapView.onPause();
+    }
+
 }
