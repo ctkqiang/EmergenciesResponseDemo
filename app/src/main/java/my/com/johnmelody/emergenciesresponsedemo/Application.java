@@ -55,23 +55,17 @@ public class Application extends AppCompatActivity implements LocationListener
         this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
     }
 
-    public Mapbox initialiseMapBoxService(Activity activity)
-    {
-        Context context = activity.getApplicationContext();
-
-        return Mapbox.getInstance(context, ConstantsValues.MAPBOX_TOKEN(context));
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint("LogNotTimber")
     public void renderUserComponents(Activity activity)
     {
-        /* Set Layout Content View  */
-        activity.setContentView(R.layout.activity_main);
-
         /* Set Services & Utilities Initialised */
         services = (Services) new Services(TAG, activity);
         util = (Util) new Util();
+
+        /* Request READ_PHONE_STATE permission */
+        this.util.requestSecurityPermission(activity); /* Refer https://stackoverflow
+        .com/q/70803660/10758321 */
 
         /* Set Action Bar To White Colour */
         Objects.requireNonNull(this.getSupportActionBar()).setBackgroundDrawable(
@@ -88,7 +82,7 @@ public class Application extends AppCompatActivity implements LocationListener
         activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity, R.color.white));
         activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
-        Log.d(TAG, "Application:: renderedUserComponents");
+        Log.d(TAG, "Application :: renderUserComponents :: getServices ");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -97,14 +91,21 @@ public class Application extends AppCompatActivity implements LocationListener
     {
         super.onCreate(savedInstanceState);
 
+        /* Initialise Mapbox Services */
+        Mapbox.getInstance(this, this.getResources().getString(R.string.mapbox_token));
+
+        /* Set Layout Content View  */
+        Application.this.setContentView(R.layout.activity_main);
+
         /* Render User Components */
         Application.this.renderUserComponents(Application.this);
 
+        /* Set MapView to Instances of the current activity */
+        Application.this.mapView = (MapView) this.findViewById(R.id.mapview);
+        //Application.this.mapView.onCreate(savedInstanceState);
+
         /* Initialise Location Services */
         Application.this.initializeLocationService();
-
-        /* Initialise Mapbox Services */
-        Application.this.initialiseMapBoxService(this);
     }
 
     @Override
@@ -126,25 +127,25 @@ public class Application extends AppCompatActivity implements LocationListener
     @Override
     public void onFlushComplete(int requestCode)
     {
-
+        Log.d(TAG, String.format("onFlushComplete: %d", requestCode));
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras)
     {
-
+        Log.d(TAG, String.format("onStatusChanged: %s%d", provider, status));
     }
 
     @Override
     public void onProviderEnabled(@NonNull String provider)
     {
-        Log.d(TAG, "onProviderEnabled: " + provider);
+        Log.d(TAG, String.format("onProviderEnabled: %s", provider));
     }
 
     @Override
     public void onProviderDisabled(@NonNull String provider)
     {
-        this.util.showToast(this,"Location Service are required.");
+        this.util.showToast(this, "Location Service Are Required.");
     }
 
     @Override

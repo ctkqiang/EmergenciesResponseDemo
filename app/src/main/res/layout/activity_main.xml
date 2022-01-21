@@ -8,5 +8,11 @@
     android:theme="@style/MyActionBar"
     tools:context=".Application">
 
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mapview"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 
 </RelativeLayout>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1011902487168",
+    "project_id": "opensourceprojects-fcd54",
+    "storage_bucket": "opensourceprojects-fcd54.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1011902487168:android:36d522df69e83c7fcf2465",
+        "android_client_info": {
+          "package_name": "my.com.johnmelody.emergenciesresponsedemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1011902487168-dm9r3hd6fm14if1tt9ea3q28qdqjluuu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "my.com.johnmelody.emergenciesresponsedemo",
+            "certificate_hash": "33e88aca0cc4ecced20bf39f4915aa70e699a8c5"
+          }
+        },
+        {
+          "client_id": "1011902487168-t7t5fd7saaimhq6b5ikhi3tjnu1e4r05.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEUnfyJQQ32N6mMTsAi_vxNG_pBY7MCIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1011902487168-t7t5fd7saaimhq6b5ikhi3tjnu1e4r05.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
