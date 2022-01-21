@@ -1,18 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:mapbox="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:theme="@style/MyActionBar"
     tools:context=".Application">
+
+    <TextView
+        android:id="@+id/currentLocation"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:focusable="true"
+        android:textAppearance="@color/black"
+        android:focusableInTouchMode="true"
+        android:foregroundGravity="bottom"
+        android:gravity="bottom"
+        android:backgroundTint="@color/white"
+        android:hapticFeedbackEnabled="true"
+        android:isScrollContainer="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:maxLines="100"
+        android:scrollbars="vertical"
+        android:textColor="@color/black"
+        android:textIsSelectable="true"
+        android:textSize="13sp"
+        tools:ignore="SmallSp" />
 
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_person_fab"
+        android:layout_width="100dp"
+        android:outlineSpotShadowColor="@color/black"
+        app:rippleColor="@color/black"
+        android:layout_height="100dp"
+        android:layout_below="@id/mapview"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="303dp"
+        android:layout_marginTop="623dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="34dp"
+        android:background="@color/white"
+        android:backgroundTint="@color/white"
+        android:baselineAlignBottom="true"
+        app:fabSize="auto"
+        app:srcCompat="@drawable/ic_baseline_notification_important_24"
+        tools:ignore="ContentDescription" />
 
-</FrameLayout>
+</RelativeLayout>

@@ -16,9 +16,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -65,7 +70,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
-public class Application extends AppCompatActivity implements LocationListener
+public class Application extends AppCompatActivity implements LocationListener, OnMapReadyCallback
 {
     public static final String TAG = ConstantsValues.TAG_NAME;
     private static final String ROUTE_LAYER_ID = "route-layer-id";
@@ -77,12 +82,13 @@ public class Application extends AppCompatActivity implements LocationListener
     protected LocationManager locationManager;
     private MapboxDirections mapboxDirectionsClient;
     private DirectionsRoute currentRoute;
+    private MapboxMap mapboxMap;
     private Point user;
     private Point help;
     public MapView mapView;
+    public TextView locationView;
     public Services services;
     public Util util;
-
 
     public void initializeLocationService()
     {
@@ -105,6 +111,15 @@ public class Application extends AppCompatActivity implements LocationListener
         /* Set Services & Utilities Initialised */
         services = (Services) new Services(TAG, activity);
         util = (Util) new Util();
+
+        /* Render Layout Components */
+        this.locationView = (TextView) this.findViewById(R.id.currentLocation);
+        this.locationView.setSelected(true);
+        this.locationView.setPadding(0xa, 0x0, 0xa, 0x0);
+        this.locationView.setMarqueeRepeatLimit(0xffffffff);
+        this.locationView.setVerticalScrollBarEnabled(true);
+        this.locationView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        this.locationView.setMovementMethod(new ScrollingMovementMethod());
 
         /*
          * Request READ_PHONE_STATE permission
@@ -148,33 +163,7 @@ public class Application extends AppCompatActivity implements LocationListener
         /* Set MapView to Instances of the current activity */
         Application.this.mapView = (MapView) this.findViewById(R.id.mapview);
         Application.this.mapView.onCreate(savedInstanceState);
-        Application.this.mapView.getMapAsync(new OnMapReadyCallback()
-        {
-            @Override
-            public void onMapReady(@NonNull MapboxMap mapboxMap)
-            {
-                mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded()
-                {
-                    @Override
-                    public void onStyleLoaded(@NonNull Style style)
-                    {
-                        Application.this.user = Point.fromLngLat(
-                                Application.this.services.getCurrentUserLocation()[0],
-                                Application.this.services.getCurrentUserLocation()[1]
-                        );
-
-                        /* TODO Change this to HTTP_REQUEST coordinates from the server side*/
-                        Application.this.help = Point.fromLngLat(
-                                Application.this.services.getCurrentUserLocation()[0] - 0x1.0p0,
-                                Application.this.services.getCurrentUserLocation()[1] - 0x1.0p0
-                        );
-
-                        /* Render sources and Fixtures */
-                        Application.this.initiateSource(style);
-                    }
-                });
-            }
-        });
+        Application.this.mapView.getMapAsync(this);
 
         /* Initialise Location Services */
         Application.this.initializeLocationService();
@@ -240,6 +229,23 @@ public class Application extends AppCompatActivity implements LocationListener
     @Override
     public void onLocationChanged(@NonNull Location location)
     {
+        /* Set Current Location */
+        new Handler(this.getMainLooper()).post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Application.this.locationView.append(
+                        String.format(
+                                "-[%s]-> Longitude: %s\t\tLatitude: %s\n",
+                                Application.this.util.getCurrentDateTime(),
+                                Application.this.util.getLocationArray(location)[0],
+                                Application.this.util.getLocationArray(location)[1]
+                        )
+                );
+            }
+        });
+
         Log.d(
                 TAG,
                 "onLocationChanged: [CurrentLocation] " +
@@ -250,7 +256,8 @@ public class Application extends AppCompatActivity implements LocationListener
     @Override
     public void onLocationChanged(@NonNull List<Location> locations)
     {
-        /* Do Nothing */
+        /* Set Current Location */
+        Application.this.locationView.setText(locations.toString());
     }
 
     @Override
@@ -334,33 +341,36 @@ public class Application extends AppCompatActivity implements LocationListener
                     {
                         Log.d(TAG, "onResponse::map == null");
                     }
-
-                    mapboxMap.getStyle(new Style.OnStyleLoaded()
+                    else
                     {
-                        @Override
-                        public void onStyleLoaded(@NonNull Style style)
+                        mapboxMap.getStyle(new Style.OnStyleLoaded()
                         {
-                            /*
-                             * Retrieve and update the source designated for showing the
-                             * directions route
-                             */
-                            GeoJsonSource source = style.getSourceAs(ROUTE_SOURCE_ID);
-
-                            /*
-                             * Create a LineString with the directions route's geometry and reset
-                             * the GeoJSON source for the route LineLayer source
-                             */
-                            if (source != null)
+                            @Override
+                            public void onStyleLoaded(@NonNull Style style)
                             {
-                                source.setGeoJson(
-                                        LineString.fromPolyline(
-                                                currentRoute.geometry(),
-                                                PRECISION_6
-                                        )
-                                );
+                                /*
+                                 * Retrieve and update the source designated for showing the
+                                 * directions route
+                                 */
+                                GeoJsonSource source = style.getSourceAs(ROUTE_SOURCE_ID);
+
+                                /*
+                                 * Create a LineString with the directions route's geometry and
+                                 * reset
+                                 * the GeoJSON source for the route LineLayer source
+                                 */
+                                if (source != null)
+                                {
+                                    source.setGeoJson(
+                                            LineString.fromPolyline(
+                                                    currentRoute.geometry(),
+                                                    PRECISION_6
+                                            )
+                                    );
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
             }
 
@@ -394,7 +404,8 @@ public class Application extends AppCompatActivity implements LocationListener
             this.mapboxDirectionsClient.cancelCall();
         }
 
-        mapView.onDestroy();
+        this.mapView.onDestroy();
+        this.util.showToast(this, "kill");
     }
 
     @Override
@@ -423,6 +434,7 @@ public class Application extends AppCompatActivity implements LocationListener
     {
         super.onStop();
         this.mapView.onStop();
+
     }
 
     @Override
@@ -432,4 +444,40 @@ public class Application extends AppCompatActivity implements LocationListener
         this.mapView.onPause();
     }
 
+    @Override
+    public void onMapReady(@NonNull MapboxMap mapboxMap)
+    {
+        Application.this.mapboxMap = mapboxMap;
+        mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded()
+        {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onStyleLoaded(@NonNull Style style)
+            {
+                Application.this.user = Point.fromLngLat(
+                        Application.this.services.getCurrentUserLocation()[0],
+                        Application.this.services.getCurrentUserLocation()[1]
+                );
+
+                /* TODO Change this to HTTP_REQUEST coordinates from the server side*/
+                Application.this.help = Point.fromLngLat(
+                        Application.this.services.getCurrentUserLocation()[0] - 0x1.0p0,
+                        Application.this.services.getCurrentUserLocation()[1] - 0x1.0p0
+                );
+
+                /* Render sources and Fixtures */
+                Application.this.initiateSource(style);
+
+                /* Render Map Layers */
+                Application.this.initiateLayers(style);
+
+                /* Get the directions route from the Mapbox Directions API */
+                Application.this.getRoute(
+                        mapboxMap,
+                        Application.this.user,
+                        Application.this.help
+                );
+            }
+        });
+    }
 }

@@ -1,6 +1,7 @@
 package my.com.johnmelody.emergenciesresponsedemo.Utilities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -10,12 +11,31 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Util
 {
     public void showToast(Context context, String message)
     {
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
-        toast.show();
+
+        if (message == "kill")
+        {
+            toast.cancel();
+        }
+        else
+        {
+            toast.show();
+        }
+    }
+
+    public String getCurrentDateTime()
+    {
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat simpleDateFormats = new SimpleDateFormat("HH:mm:ss");
+
+        return simpleDateFormats.format(new Date());
     }
 
     public String[] getLocationArray(Location location)
@@ -35,7 +55,8 @@ public class Util
                     Manifest.permission.READ_PHONE_STATE
             ) != PackageManager.PERMISSION_GRANTED)
             {
-                this.showToast(activity.getApplicationContext(), "Accept the permission in order for the app to work!");
+                this.showToast(activity.getApplicationContext(), "Accept the permission in order "
+                                                                 + "for the app to work!");
 
                 ActivityCompat.requestPermissions(
                         activity,
