@@ -18,7 +18,6 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -28,7 +27,7 @@ public class Services extends Util
     public String TAG;
     public Activity activity;
 
-    public Services(@NotNull String TAG, @NotNull Activity activity)
+    public Services(String TAG, Activity activity)
     {
         this.TAG = TAG;
         this.activity = activity;
@@ -93,7 +92,7 @@ public class Services extends Util
         }
         else
         {
-            Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+           Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
             if (locationGPS != null)
             {

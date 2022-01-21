@@ -8,8 +8,5 @@
     android:theme="@style/MyActionBar"
     tools:context=".Application">
 
-    <com.mapbox.mapboxsdk.maps.MapView
-        android:id="@+id/mapView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+
 </RelativeLayout>
