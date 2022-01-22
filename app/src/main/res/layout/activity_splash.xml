@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/app"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:src="@mipmap/emergency_icon"
         android:layout_centerInParent="true"
         tools:ignore="ContentDescription" />

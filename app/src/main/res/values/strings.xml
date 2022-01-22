@@ -6,4 +6,6 @@
     <string name="enter_password">Enter Password</string>
     <string name="sign_in">Sign In</string>
     <string name="register">Register</string>
+    <string name="email_needed">Email is required</string>
+    <string name="password_needed">Password length must be longer than 5</string>
 </resources>

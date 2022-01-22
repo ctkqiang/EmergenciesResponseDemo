@@ -128,4 +128,15 @@ public class Util
         return arrayList;
     }
 
+    public Boolean isFieldNull(String data)
+    {
+        if (data.isEmpty() || data.length() < 5)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

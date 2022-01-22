@@ -2,83 +2,87 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@android:style/Theme.Black.NoTitleBar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.AuthenticationActivity">
 
-    <ScrollView
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="93dp"
+        android:src="@mipmap/emergency_icon"
+        tools:ignore="ContentDescription" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/filledTextField"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
-        tools:ignore="ScrollViewCount,UselessParent">
+        android:layout_height="100dp"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="230dp"
+        android:layout_marginEnd="23dp"
+        android:hint="@string/enter_email">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/filledTextField"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="200dp"
-            android:layout_marginEnd="23dp"
-            android:hint="@string/enter_email">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/useremail"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:importantForAutofill="no"
-                android:inputType="textEmailAddress"
-                android:labelFor="@+id/useremail" />
-
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/filled"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_below="@+id/filledTextField"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="23dp"
-            android:hint="@string/enter_password">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/userpassword"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:importantForAutofill="no"
-                android:inputType="textPassword"
-                android:labelFor="@+id/userpassword" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/login"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/useremail"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_below="@id/filled"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="23dp"
-            android:layout_marginBottom="13dp"
-            android:text="@string/sign_in"
-            android:textColor="@color/black"
-            tools:ignore="ObsoleteLayoutParam" />
+            android:importantForAutofill="no"
+            android:inputType="textEmailAddress"
+            android:labelFor="@+id/useremail" />
 
-        <Button
-            android:id="@+id/register"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/filled"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/filledTextField"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="23dp"
+        android:hint="@string/enter_password">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/userpassword"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_below="@id/login"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="13dp"
-            android:layout_marginEnd="23dp"
-            android:text="@string/register"
-            android:textColor="@color/black"
-            tools:ignore="ObsoleteLayoutParam" />
-    </ScrollView>
+            android:importantForAutofill="no"
+            android:inputType="textPassword"
+            android:labelFor="@+id/userpassword" />
 
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/login"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/filled"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="23dp"
+        android:layout_marginBottom="13dp"
+        android:onClick="onAuthentication"
+        android:text="@string/sign_in"
+        android:textColor="@color/black"
+        tools:ignore="ObsoleteLayoutParam,UsingOnClickInXml" />
+
+    <Button
+        android:id="@+id/register"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/login"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="23dp"
+        android:onClick="onAuthentication"
+        android:text="@string/register"
+        android:textColor="@color/black"
+        tools:ignore="ObsoleteLayoutParam,UsingOnClickInXml" />
 
 </RelativeLayout>
