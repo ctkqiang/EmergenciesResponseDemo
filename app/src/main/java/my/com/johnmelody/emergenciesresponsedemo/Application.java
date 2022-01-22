@@ -130,7 +130,7 @@ public class Application extends AppCompatActivity implements LocationListener, 
             {
                 /* TODO */
 
-                Log.d(TAG, "Sending Help.");
+                Log.d(TAG, "Sending Help...");
             }
         });
 

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Emergencies Response Demo</string>
     <string name="mapbox_token">pk.eyJ1Ijoiam9obm1lbG9keW1lbCIsImEiOiJja3hqN25qc2YwdHV6Mnh1YmlnenJqY2JzIn0.Zu3zVK8gAgBmpKmIYt0DpA</string>
+    <string name="firebase_server_key">AAAA65oWmoA:APA91bHoU3fqC4ZiyWqsuL71MNaGqFqkwbMWSQTTMuqMmU1OQPQoP6SxdCBcpcdg3mzvc0fkexhUE4CM0Pt5uV53g9QvvYECKnRC3ox1MUKfECOo_U9JJyey0A0rqIqe190Fo1eREOMI</string>
 </resources>
