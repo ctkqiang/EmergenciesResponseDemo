@@ -34,23 +34,21 @@
         android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_person_fab"
+        android:id="@+id/fabtn"
         android:layout_width="100dp"
-        android:outlineSpotShadowColor="@color/black"
-        app:rippleColor="@color/black"
         android:layout_height="100dp"
         android:layout_below="@id/mapview"
-        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="303dp"
-        android:layout_marginTop="623dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="34dp"
+        android:layout_marginTop="600dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="31dp"
         android:background="@color/white"
         android:backgroundTint="@color/white"
         android:baselineAlignBottom="true"
-        app:fabSize="auto"
+        android:outlineSpotShadowColor="@color/black"
+        app:fabSize="normal"
+        app:rippleColor="@color/black"
         app:srcCompat="@drawable/ic_baseline_notification_important_24"
         tools:ignore="ContentDescription" />
 

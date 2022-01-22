@@ -1,8 +1,15 @@
 package my.com.johnmelody.emergenciesresponsedemo;
 
+import static android.Manifest.permission.READ_PHONE_STATE;
 import static com.mapbox.core.constants.Constants.PRECISION_6;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineCap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -17,8 +24,8 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.TelephonyManager;
 import android.text.Html;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -31,6 +38,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.MapboxDirections;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
@@ -61,15 +69,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineCap;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
-
 public class Application extends AppCompatActivity implements LocationListener, OnMapReadyCallback
 {
     public static final String TAG = ConstantsValues.TAG_NAME;
@@ -82,6 +81,7 @@ public class Application extends AppCompatActivity implements LocationListener, 
     protected LocationManager locationManager;
     private MapboxDirections mapboxDirectionsClient;
     private DirectionsRoute currentRoute;
+    private FloatingActionButton floatingActionButton;
     private MapboxMap mapboxMap;
     private Point user;
     private Point help;
@@ -120,6 +120,19 @@ public class Application extends AppCompatActivity implements LocationListener, 
         this.locationView.setVerticalScrollBarEnabled(true);
         this.locationView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         this.locationView.setMovementMethod(new ScrollingMovementMethod());
+
+        this.floatingActionButton = (FloatingActionButton) this.findViewById(R.id.fabtn);
+        this.floatingActionButton.setOnClickListener(new View.OnClickListener()
+        {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View view)
+            {
+                /* TODO */
+
+                Log.d(TAG, "Sending Help.");
+            }
+        });
 
         /*
          * Request READ_PHONE_STATE permission
@@ -196,6 +209,7 @@ public class Application extends AppCompatActivity implements LocationListener, 
         loadMapStyle.addSource(iconOfGeoJsonSource);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void initiateLayers(@NonNull Style loadedMapStyle)
     {
         LineLayer routeLayer = new LineLayer(ROUTE_LAYER_ID, ROUTE_SOURCE_ID);
@@ -479,5 +493,21 @@ public class Application extends AppCompatActivity implements LocationListener, 
                 );
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode)
+        {
+            case 100:
+                Application.this.util.getPhoneInfo(Application.this);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + requestCode);
+        }
+
     }
 }
