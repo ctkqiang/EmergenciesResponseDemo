@@ -120,7 +120,6 @@ public class Application extends AppCompatActivity implements LocationListener, 
         this.locationView.setVerticalScrollBarEnabled(true);
         this.locationView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         this.locationView.setMovementMethod(new ScrollingMovementMethod());
-
         this.floatingActionButton = (FloatingActionButton) this.findViewById(R.id.fabtn);
         this.floatingActionButton.setOnClickListener(new View.OnClickListener()
         {
