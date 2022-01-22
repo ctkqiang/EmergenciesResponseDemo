@@ -15,8 +15,10 @@ import android.widget.EditText;
 
 import java.util.Objects;
 
+import my.com.johnmelody.emergenciesresponsedemo.Application;
 import my.com.johnmelody.emergenciesresponsedemo.Constants.ConstantsValues;
 import my.com.johnmelody.emergenciesresponsedemo.R;
+import my.com.johnmelody.emergenciesresponsedemo.Utilities.AuthenticationService;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.DatabaseHandler;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.Util;
 
@@ -25,6 +27,7 @@ public class AuthenticationActivity extends AppCompatActivity
     private static final String TAG = ConstantsValues.TAG_NAME;
     private Util util;
     private EditText emailField, passwordField;
+    private AuthenticationService authenticationService;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void renderUserComponents(Activity activity)
@@ -34,6 +37,7 @@ public class AuthenticationActivity extends AppCompatActivity
 
         /* Services Declarations */
         this.util = (Util) new Util();
+        this.authenticationService = (AuthenticationService) new AuthenticationService(TAG, this);
 
         /* Set Title for action Bar & set title colour */
         Objects.requireNonNull(this.getSupportActionBar()).setElevation(0x0);
@@ -75,6 +79,14 @@ public class AuthenticationActivity extends AppCompatActivity
                     passwordField.setError(this.getString(R.string.password_needed));
                 }
 
+                if (!this.authenticationService.isLoggedIn())
+                {
+                    this.authenticationService.registerUser(email, password);
+                    this.util.navigate(AuthenticationActivity.this, Application.class);
+                }
+                
+                this.util.navigate(AuthenticationActivity.this, Application.class);
+
                 Log.d(TAG, "onAuthentication: " + email);
 
             case R.id.register:
@@ -83,6 +95,14 @@ public class AuthenticationActivity extends AppCompatActivity
                     emailField.setError(this.getString(R.string.email_needed));
                     passwordField.setError(this.getString(R.string.password_needed));
                 }
+
+                if (!this.authenticationService.isLoggedIn())
+                {
+                    this.authenticationService.loginUser(email, password);
+                    this.util.navigate(AuthenticationActivity.this, Application.class);
+                }
+
+                this.util.navigate(AuthenticationActivity.this, Application.class);
 
                 Log.d(TAG, "onAuthentication: " + email);
             default:

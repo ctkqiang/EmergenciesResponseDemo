@@ -8,6 +8,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -22,6 +23,9 @@ import com.an.deviceinfo.device.model.Network;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import my.com.johnmelody.emergenciesresponsedemo.Activities.SplashActivity;
+import my.com.johnmelody.emergenciesresponsedemo.Application;
 
 public class Util
 {
@@ -138,5 +142,12 @@ public class Util
         {
             return false;
         }
+    }
+
+    public void navigate(Activity activity, Class<?> className)
+    {
+        Intent intent = (Intent) new Intent(activity, className);
+        activity.startActivity(intent);
+        activity.finish();
     }
 }
