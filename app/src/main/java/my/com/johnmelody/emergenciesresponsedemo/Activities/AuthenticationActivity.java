@@ -84,7 +84,7 @@ public class AuthenticationActivity extends AppCompatActivity
                     this.authenticationService.registerUser(email, password);
                     this.util.navigate(AuthenticationActivity.this, Application.class);
                 }
-                
+
                 this.util.navigate(AuthenticationActivity.this, Application.class);
 
                 Log.d(TAG, "onAuthentication: " + email);

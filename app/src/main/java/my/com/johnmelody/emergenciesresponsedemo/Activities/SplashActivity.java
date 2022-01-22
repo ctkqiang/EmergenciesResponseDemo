@@ -18,7 +18,9 @@ import java.util.Objects;
 import my.com.johnmelody.emergenciesresponsedemo.Application;
 import my.com.johnmelody.emergenciesresponsedemo.Constants.ConstantsValues;
 import my.com.johnmelody.emergenciesresponsedemo.R;
+import my.com.johnmelody.emergenciesresponsedemo.Utilities.AuthenticationService;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.DatabaseHandler;
+import my.com.johnmelody.emergenciesresponsedemo.Utilities.Util;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity
@@ -27,6 +29,8 @@ public class SplashActivity extends AppCompatActivity
     public DatabaseHandler databaseHandler;
     private Handler handler;
     private Intent intent;
+    private Util util;
+    private AuthenticationService authenticationService;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -35,6 +39,9 @@ public class SplashActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_splash);
+
+        this.util = (Util) new Util();
+        this.authenticationService = (AuthenticationService) new AuthenticationService(TAG, this);
 
         /* Set Title for action Bar & set title colour */
         Objects.requireNonNull(this.getSupportActionBar()).setTitle(
@@ -53,25 +60,21 @@ public class SplashActivity extends AppCompatActivity
             @Override
             public void run()
             {
-                if (SplashActivity.this.databaseHandler.getType() != 0)
+                if (SplashActivity.this.authenticationService.isLoggedIn())
                 {
-                    SplashActivity.this.intent = (Intent) new Intent(
+                    SplashActivity.this.util.navigate(
                             SplashActivity.this,
                             Application.class
                     );
-                    SplashActivity.this.startActivity(intent);
-                    SplashActivity.this.finish();
 
                     Log.d(TAG, "Navigate to application");
                 }
                 else
                 {
-                    SplashActivity.this.intent = (Intent) new Intent(
+                    SplashActivity.this.util.navigate(
                             SplashActivity.this,
                             AuthenticationActivity.class
                     );
-                    SplashActivity.this.startActivity(intent);
-                    SplashActivity.this.finish();
 
                     Log.d(TAG, "Navigate to Authentication");
                 }
