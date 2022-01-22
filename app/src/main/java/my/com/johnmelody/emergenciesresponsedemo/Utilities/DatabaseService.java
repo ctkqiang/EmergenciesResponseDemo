@@ -11,10 +11,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import my.com.johnmelody.emergenciesresponsedemo.Model.LocationItem;
+import my.com.johnmelody.emergenciesresponsedemo.Model.UserItem;
+
 public class DatabaseService
 {
     public Activity activity;
     public String TAG;
+    public UserItem userItem;
+    public LocationItem locationItem;
+    private final String path = "users";
+
+    private Util util()
+    {
+        return new Util();
+    }
 
     public DatabaseService(Activity activity, String TAG)
     {
@@ -22,26 +33,40 @@ public class DatabaseService
         this.TAG = TAG;
     }
 
+    public DatabaseHandler databaseHandler()
+    {
+        return new DatabaseHandler(this.activity.getApplicationContext());
+    }
+
     public FirebaseDatabase database()
     {
         return FirebaseDatabase.getInstance();
     }
 
-    public DatabaseReference getPath()
+    public DatabaseReference getPath(String path)
     {
-        final String PATH = "";
-        return this.database().getReference(PATH);
+        return this.database().getReference(path);
     }
 
-    public void write(String value)
+    public void writeUserDetails(String email, String password, int type)
     {
-        this.getPath().setValue(value);
-        Log.d(TAG, "Database -> write: " + value);
+        this.userItem = (UserItem) new UserItem(email, password, type);
+        this.getPath(this.path).setValue(this.userItem);
+        this.databaseHandler().insertData(email, password, type);
     }
 
-    public void read()
+    public void writeCurrentLocation(double longitude, double latitude)
     {
-        this.getPath().addValueEventListener(new ValueEventListener()
+        this.locationItem = (LocationItem) new LocationItem(longitude, latitude);
+        this.getPath(this.path).setValue(this.locationItem);
+        this.databaseHandler().insertLocationData(
+                String.valueOf(String.format("%s,%s", longitude, latitude))
+        );
+    }
+
+    public void read(String path)
+    {
+        this.getPath(path).addValueEventListener(new ValueEventListener()
         {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot)

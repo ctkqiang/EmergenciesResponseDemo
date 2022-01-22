@@ -31,6 +31,12 @@
         android:theme="@style/Theme.EmergenciesResponseDemo"
         tools:ignore="AllowBackup">
         <activity
+            android:name=".Activities.SplashActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.AuthenticationActivity"
+            android:exported="false" />
+        <activity
             android:name=".Application"
             android:exported="true">
             <intent-filter>
