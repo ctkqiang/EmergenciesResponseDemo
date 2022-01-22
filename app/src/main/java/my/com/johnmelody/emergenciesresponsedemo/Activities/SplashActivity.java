@@ -27,7 +27,7 @@ public class SplashActivity extends AppCompatActivity
 {
     private static final String TAG = ConstantsValues.TAG_NAME;
     public DatabaseHandler databaseHandler;
-    private Handler handler;
+    public Handler handler;
     private Intent intent;
     private Util util;
     private AuthenticationService authenticationService;
