@@ -1,6 +1,5 @@
 package my.com.johnmelody.emergenciesresponsedemo;
 
-import static android.Manifest.permission.READ_PHONE_STATE;
 import static com.mapbox.core.constants.Constants.PRECISION_6;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
@@ -24,13 +23,11 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -67,8 +64,6 @@ import java.util.Objects;
 
 import my.com.johnmelody.emergenciesresponsedemo.Constants.ConstantsValues;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.AuthenticationService;
-import my.com.johnmelody.emergenciesresponsedemo.Utilities.DatabaseHandler;
-import my.com.johnmelody.emergenciesresponsedemo.Utilities.DatabaseService;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.Services;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.Util;
 import retrofit2.Call;
@@ -111,7 +106,7 @@ public class Application extends AppCompatActivity implements LocationListener, 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    @SuppressLint("LogNotTimber")
+    @SuppressLint({"LogNotTimber", "UseCompatLoadingForDrawables"})
     public void renderUserComponents(Activity activity)
     {
         /* Set Services & Utilities Initialised */
@@ -123,14 +118,6 @@ public class Application extends AppCompatActivity implements LocationListener, 
                 TAG,
                 this
         );
-        DatabaseService databaseService = new DatabaseService(this, TAG);
-        //        databaseService.writeUserDetails("", "", "", 0.00, 0.00, 0);
-        //        DatabaseHandler databaseHandler = new DatabaseHandler(this);
-        //        Log.d(TAG, "hhhhhhhhhhhhhhhhhh: " + databaseHandler.getPhoneNumber
-        //                (authenticationService.getCurrentUser()));
-        //        Log.d(TAG, "renderUserComponents:ooooooooooo " + this.services.getLocation()[0]
-        //        .toString());
-
 
         /* Render Layout Components */
         this.locationView = (TextView) this.findViewById(R.id.currentLocation);
@@ -549,6 +536,6 @@ public class Application extends AppCompatActivity implements LocationListener, 
             //
         }
 
-        return(super.onOptionsItemSelected(item));
+        return (super.onOptionsItemSelected(item));
     }
 }

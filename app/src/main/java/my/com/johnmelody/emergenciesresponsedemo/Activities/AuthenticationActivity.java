@@ -23,6 +23,7 @@ import my.com.johnmelody.emergenciesresponsedemo.Constants.ConstantsValues;
 import my.com.johnmelody.emergenciesresponsedemo.R;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.AuthenticationService;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.DatabaseHandler;
+import my.com.johnmelody.emergenciesresponsedemo.Utilities.DatabaseService;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.Services;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.Util;
 
@@ -33,6 +34,7 @@ public class AuthenticationActivity extends AppCompatActivity
     private Util util;
     private EditText emailField, phoneField, passwordField;
     private AuthenticationService authenticationService;
+    private DatabaseService databaseService;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     public void renderUserComponents(Activity activity)
@@ -43,6 +45,7 @@ public class AuthenticationActivity extends AppCompatActivity
         /* Services Declarations */
         this.util = (Util) new Util();
         this.services = (Services) new Services(TAG, this);
+        this.databaseService = (DatabaseService) new DatabaseService(this, TAG);
         this.authenticationService = (AuthenticationService) new AuthenticationService(TAG, this);
         this.util.requestPermissionsAtOnce(AuthenticationActivity.this);
 
@@ -114,13 +117,21 @@ public class AuthenticationActivity extends AppCompatActivity
                 {
                     if (!this.authenticationService.isLoggedIn())
                     {
-
+                        this.databaseService.writeUserDetails(
+                                email,
+                                phone,
+                                password,
+                                this.services.getLocation()[0],
+                                this.services.getLocation()[1],
+                                0
+                        );
+                        
                         this.authenticationService.registerUser(
                                 email,
                                 phone,
                                 password,
                                 this.services.getLocation()[0],
-                                this.services.getLocation()[0]
+                                this.services.getLocation()[1]
                         );
 
                         this.util.navigate(AuthenticationActivity.this, Application.class);
