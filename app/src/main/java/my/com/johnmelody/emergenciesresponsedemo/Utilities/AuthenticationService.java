@@ -78,7 +78,7 @@ public class AuthenticationService extends Util
             {
                 databaseHandler = new DatabaseHandler(activity);
 
-                if (databaseHandler.getType() == 0)
+                if (databaseHandler.getType() == 0x0)
                 {
                     databaseService().writeUserDetails(email, phone, password, 0, 0, 0);
                 }
