@@ -5,22 +5,30 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.UUID;
+
+import my.com.johnmelody.emergenciesresponsedemo.Model.DataItem;
 import my.com.johnmelody.emergenciesresponsedemo.Model.LocationItem;
 import my.com.johnmelody.emergenciesresponsedemo.Model.UserItem;
 
-public class DatabaseService
+public class DatabaseService extends LocalSharedPreference
 {
     public Activity activity;
     public String TAG;
     public UserItem userItem;
+    public DataItem dataItem;
     public LocationItem locationItem;
-    private final String path = "users";
+    public String user = "user";
+    public String emergency = "emergency";
+    public String child = UUID.randomUUID().toString();
 
     private Util util()
     {
@@ -43,30 +51,31 @@ public class DatabaseService
         return FirebaseDatabase.getInstance();
     }
 
-    public DatabaseReference getPath(String path)
+    public DatabaseReference getDatabaseReference(String path)
     {
         return this.database().getReference(path);
     }
 
-    public void writeUserDetails(String email, String password, int type)
+    public void writeUserDetails(String email, String phone, String password, double longi,
+                                 double lati, int type)
     {
-        this.userItem = (UserItem) new UserItem(email, password, type);
-        this.getPath(this.path).setValue(this.userItem);
-        this.databaseHandler().insertData(email, password, type);
+        this.dataItem = (DataItem) new DataItem(email, phone, password, longi, lati, type);
+        this.getDatabaseReference(this.user).child(this.child).setValue(dataItem);
+        this.databaseHandler().insertData(email, password, type, phone);
+        /*this.insertUserPhoneNumber(phone);*/
+        this.databaseHandler().insertLocationData(String.format("%s,%s", longi, lati));
     }
 
     public void writeCurrentLocation(double longitude, double latitude)
     {
+        String phoneNumber = this.getUserPhoneNumber();
         this.locationItem = (LocationItem) new LocationItem(longitude, latitude);
-        this.getPath(this.path).setValue(this.locationItem);
-        this.databaseHandler().insertLocationData(
-                String.valueOf(String.format("%s,%s", longitude, latitude))
-        );
+        this.getDatabaseReference(this.emergency).child(phoneNumber).setValue(this.locationItem);
     }
 
     public void read(String path)
     {
-        this.getPath(path).addValueEventListener(new ValueEventListener()
+        this.getDatabaseReference(path).addValueEventListener(new ValueEventListener()
         {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot)

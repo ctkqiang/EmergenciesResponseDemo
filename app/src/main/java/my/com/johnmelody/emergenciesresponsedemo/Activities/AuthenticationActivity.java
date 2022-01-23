@@ -26,7 +26,7 @@ public class AuthenticationActivity extends AppCompatActivity
 {
     private static final String TAG = ConstantsValues.TAG_NAME;
     private Util util;
-    private EditText emailField, passwordField;
+    private EditText emailField, phoneField, passwordField;
     private AuthenticationService authenticationService;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -51,6 +51,7 @@ public class AuthenticationActivity extends AppCompatActivity
 
         /* Render Layout Components */
         this.emailField = (EditText) this.findViewById(R.id.useremail);
+        this.phoneField = (EditText) this.findViewById(R.id.userphone);
         this.passwordField = (EditText) this.findViewById(R.id.userpassword);
     }
 
@@ -68,6 +69,7 @@ public class AuthenticationActivity extends AppCompatActivity
     public void onAuthentication(View view)
     {
         String email = this.emailField.getText().toString();
+        String phone = this.phoneField.getText().toString();
         String password = this.passwordField.getText().toString();
 
         switch (view.getId())
@@ -76,34 +78,42 @@ public class AuthenticationActivity extends AppCompatActivity
                 if (this.util.isFieldNull(email) || this.util.isFieldNull(password))
                 {
                     emailField.setError(this.getString(R.string.email_needed));
+                    phoneField.setError(this.getString(R.string.phone_number_required));
                     passwordField.setError(this.getString(R.string.password_needed));
                 }
-
-                if (!this.authenticationService.isLoggedIn())
+                else
                 {
-                    this.authenticationService.registerUser(email, password);
-                    this.util.navigate(AuthenticationActivity.this, Application.class);
+                    if (!this.authenticationService.isLoggedIn())
+                    {
+                        this.authenticationService.loginUser(email, password);
+                        this.util.navigate(AuthenticationActivity.this, Application.class);
+                    }
+                    else
+                    {
+                        this.util.navigate(AuthenticationActivity.this, Application.class);
+                    }
                 }
-
-                this.util.navigate(AuthenticationActivity.this, Application.class);
-
                 Log.d(TAG, "onAuthentication: " + email);
 
             case R.id.register:
                 if (this.util.isFieldNull(email) || this.util.isFieldNull(password))
                 {
                     emailField.setError(this.getString(R.string.email_needed));
+                    phoneField.setError(this.getString(R.string.phone_number_required));
                     passwordField.setError(this.getString(R.string.password_needed));
                 }
-
-                if (!this.authenticationService.isLoggedIn())
+                else
                 {
-                    this.authenticationService.loginUser(email, password);
-                    this.util.navigate(AuthenticationActivity.this, Application.class);
+                    if (!this.authenticationService.isLoggedIn())
+                    {
+                        this.authenticationService.registerUser(email, phone, password);
+                        this.util.navigate(AuthenticationActivity.this, Application.class);
+                    }
+                    else
+                    {
+                        this.util.navigate(AuthenticationActivity.this, Application.class);
+                    }
                 }
-
-                this.util.navigate(AuthenticationActivity.this, Application.class);
-
                 Log.d(TAG, "onAuthentication: " + email);
             default:
                 break;

@@ -63,6 +63,9 @@ import java.util.List;
 import java.util.Objects;
 
 import my.com.johnmelody.emergenciesresponsedemo.Constants.ConstantsValues;
+import my.com.johnmelody.emergenciesresponsedemo.Utilities.AuthenticationService;
+import my.com.johnmelody.emergenciesresponsedemo.Utilities.DatabaseHandler;
+import my.com.johnmelody.emergenciesresponsedemo.Utilities.DatabaseService;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.Services;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.Util;
 import retrofit2.Call;
@@ -111,6 +114,15 @@ public class Application extends AppCompatActivity implements LocationListener, 
         /* Set Services & Utilities Initialised */
         services = (Services) new Services(TAG, activity);
         util = (Util) new Util();
+
+        /* TODO TEMP REMOVE */
+        //        AuthenticationService authenticationService = new AuthenticationService(TAG,
+        //        this);
+        //        DatabaseService databaseService = new DatabaseService(this, TAG);
+        //        databaseService.writeUserDetails("", "", "", 0.00, 0.00, 0);
+        //        DatabaseHandler databaseHandler = new DatabaseHandler(this);
+        //        Log.d(TAG, "hhhhhhhhhhhhhhhhhh: " + databaseHandler.getPhoneNumber
+        //        (authenticationService.getCurrentUser()));
 
         /* Render Layout Components */
         this.locationView = (TextView) this.findViewById(R.id.currentLocation);

@@ -26,7 +26,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
     public void onCreate(SQLiteDatabase database)
     {
         String query = "CREATE TABLE EMERGENCIES( ID INTEGER PRIMARY KEY AUTOINCREMENT, EMAIL "
-                       + "TEXT, PASSWORD TEXT, CURRENTLOCATION TEXT, TYPE INT)";
+                       + "TEXT, PASSWORD TEXT, PHONE_NUMBER TEXT, CURRENTLOCATION TEXT, TYPE INT)";
 
         database.execSQL(query);
     }
@@ -38,7 +38,12 @@ public class DatabaseHandler extends SQLiteOpenHelper
         this.onCreate(database);
     }
 
-    public void insertData(String email, String password, int type)
+    public SQLiteDatabase sqLiteDatabase()
+    {
+        return this.getWritableDatabase();
+    }
+
+    public void insertData(String email, String password, int type, String phone)
     {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -46,6 +51,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
         values.put("EMAIL", email);
         values.put("PASSWORD", password);
         values.put("TYPE", type);
+        values.put("PHONE_NUMBER", phone);
 
         database.insert("EMERGENCIES", null, values);
         database.close();
@@ -65,10 +71,12 @@ public class DatabaseHandler extends SQLiteOpenHelper
     @SuppressLint("Range")
     public int getType()
     {
-        SQLiteDatabase database = this.getReadableDatabase();
-
         @SuppressLint("Recycle")
-        Cursor cursor = database.rawQuery("SELECT TYPE FROM EMERGENCIES WHERE ID = 1 ", null);
+        Cursor cursor = this.sqLiteDatabase()
+                .rawQuery(
+                        "SELECT TYPE FROM EMERGENCIES WHERE ID = 1" + " ",
+                        null
+                );
 
         if (cursor.moveToFirst())
         {
@@ -85,10 +93,9 @@ public class DatabaseHandler extends SQLiteOpenHelper
     @SuppressLint("Range")
     public ArrayList getEmail()
     {
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         ArrayList<String> arrayList = new ArrayList<String>();
 
-        @SuppressLint("Recycle") Cursor cursor = sqLiteDatabase.rawQuery(
+        @SuppressLint("Recycle") Cursor cursor = this.sqLiteDatabase().rawQuery(
                 "SELECT * FROM EMERGENCIES",
                 null
         );
@@ -102,5 +109,31 @@ public class DatabaseHandler extends SQLiteOpenHelper
         }
 
         return arrayList;
+    }
+
+    public String getPhoneNumber(String email)
+    {
+        Cursor cursor = null;
+        String phone = null;
+        try
+        {
+            cursor = this.sqLiteDatabase().rawQuery(
+                    "SELECT PHONE_NUMBER FROM EMERGENCIES WHERE EMAIL + ?",
+                    new String[]{email}
+            );
+
+            if (cursor.getCount() > 0x0)
+            {
+                cursor.moveToFirst();
+
+                phone = cursor.getString(0x0);
+            }
+
+            return (phone != null) ? phone : "no-phone-number";
+        }
+        finally
+        {
+            cursor.close();
+        }
     }
 }

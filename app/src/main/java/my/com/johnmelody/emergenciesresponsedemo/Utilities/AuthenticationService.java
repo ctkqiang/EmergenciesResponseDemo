@@ -1,6 +1,7 @@
 package my.com.johnmelody.emergenciesresponsedemo.Utilities;
 
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -40,12 +41,17 @@ public class AuthenticationService extends Util
         return this.firebaseAuth().getCurrentUser();
     }
 
+    public String getCurrentUser()
+    {
+        return this.firebaseAuth().getCurrentUser().getEmail();
+    }
+
     public boolean isLoggedIn()
     {
         return this.firebaseUser() != null;
     }
 
-    public void registerUser(String email, String password)
+    public void registerUser(String email, String phone, String password)
     {
         this.firebaseAuth()
                 .createUserWithEmailAndPassword(email, password)
@@ -54,21 +60,16 @@ public class AuthenticationService extends Util
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task)
                     {
-                        if (task.isSuccessful())
-                        {
-                            databaseService().writeUserDetails(email, password, 0);
-                            showToast(
-                                    activity.getApplicationContext(),
-                                    String.format("%s registered", email)
-                            );
-                        }
-                        else
-                        {
-                            showToast(
-                                    activity.getApplicationContext(),
-                                    String.format("Failed To register %s", email)
-                            );
-                        }
+
+                        databaseService().writeUserDetails(email, phone, password, 0, 0, 0);
+
+                        showToast(
+                                activity.getApplicationContext(),
+                                String.format("%s registered", email)
+                        );
+
+                        Log.d(TAG, "onComplete: ");
+
                     }
                 }).addOnFailureListener(new OnFailureListener()
         {
@@ -79,7 +80,7 @@ public class AuthenticationService extends Util
 
                 if (databaseHandler.getType() == 0)
                 {
-                    databaseService().writeUserDetails(email, password, 0);
+                    databaseService().writeUserDetails(email, phone, password, 0, 0, 0);
                 }
 
                 showToast(
@@ -99,27 +100,21 @@ public class AuthenticationService extends Util
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task)
                     {
-                        if (task.isSuccessful())
-                        {
-                            showToast(
-                                    activity.getApplicationContext(),
-                                    String.format("%s, Welcome Back", email)
-                            );
-                        }
-                        else
-                        {
-                            showToast(
-                                    activity.getApplicationContext(),
-                                    String.format("%s, Can't Login", email)
-                            );
-                        }
+
+                        showToast(
+                                activity.getApplicationContext(),
+                                String.format("%s, Welcome Back", email)
+                        );
+
+                        Log.d(TAG, "onComplete: ");
+
                     }
                 }).addOnFailureListener(new OnFailureListener()
         {
             @Override
             public void onFailure(@NonNull Exception e)
             {
-
+                /* Do Nothing */
             }
         });
     }

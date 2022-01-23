@@ -24,7 +24,7 @@
         android:scrollbars="vertical"
         android:textColor="@color/black"
         android:textIsSelectable="true"
-        android:textSize="13sp"
+        android:textSize="11sp"
         tools:ignore="SmallSp" />
 
     <com.mapbox.mapboxsdk.maps.MapView
