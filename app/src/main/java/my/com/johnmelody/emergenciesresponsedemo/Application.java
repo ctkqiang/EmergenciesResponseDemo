@@ -29,6 +29,9 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -116,13 +119,18 @@ public class Application extends AppCompatActivity implements LocationListener, 
         util = (Util) new Util();
 
         /* TODO TEMP REMOVE */
-        //        AuthenticationService authenticationService = new AuthenticationService(TAG,
-        //        this);
-        //        DatabaseService databaseService = new DatabaseService(this, TAG);
+        AuthenticationService authenticationService = new AuthenticationService(
+                TAG,
+                this
+        );
+        DatabaseService databaseService = new DatabaseService(this, TAG);
         //        databaseService.writeUserDetails("", "", "", 0.00, 0.00, 0);
         //        DatabaseHandler databaseHandler = new DatabaseHandler(this);
         //        Log.d(TAG, "hhhhhhhhhhhhhhhhhh: " + databaseHandler.getPhoneNumber
-        //        (authenticationService.getCurrentUser()));
+        //                (authenticationService.getCurrentUser()));
+        //        Log.d(TAG, "renderUserComponents:ooooooooooo " + this.services.getLocation()[0]
+        //        .toString());
+
 
         /* Render Layout Components */
         this.locationView = (TextView) this.findViewById(R.id.currentLocation);
@@ -161,11 +169,13 @@ public class Application extends AppCompatActivity implements LocationListener, 
         /* Set Title for action Bar & set title colour */
         this.getSupportActionBar().setTitle(Html.fromHtml("<font color='#000000'>" + ConstantsValues.APP_NAME + "</font>"));
         this.getSupportActionBar().setElevation(0x0);
+        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        this.getSupportActionBar().setLogo(this.getResources().getDrawable(R.drawable.icon));
 
         /* Set Status bar colour to white & Set Status bar icon to black */
         activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity, R.color.white));
         activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
+        activity.getWindow().makeActive();
         Log.d(TAG, "Application :: renderUserComponents :: getServices ");
     }
 
@@ -520,5 +530,25 @@ public class Application extends AppCompatActivity implements LocationListener, 
                 throw new IllegalStateException("Unexpected value: " + requestCode);
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        this.getMenuInflater().inflate(R.menu.menu, menu);
+
+        return true;
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if (item.getItemId() == R.id.action_info)
+        {
+            //
+        }
+
+        return(super.onOptionsItemSelected(item));
     }
 }

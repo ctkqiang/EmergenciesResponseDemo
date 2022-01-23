@@ -2,10 +2,13 @@ package my.com.johnmelody.emergenciesresponsedemo.Activities;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -20,16 +23,18 @@ import my.com.johnmelody.emergenciesresponsedemo.Constants.ConstantsValues;
 import my.com.johnmelody.emergenciesresponsedemo.R;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.AuthenticationService;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.DatabaseHandler;
+import my.com.johnmelody.emergenciesresponsedemo.Utilities.Services;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.Util;
 
 public class AuthenticationActivity extends AppCompatActivity
 {
     private static final String TAG = ConstantsValues.TAG_NAME;
+    private Services services;
     private Util util;
     private EditText emailField, phoneField, passwordField;
     private AuthenticationService authenticationService;
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     public void renderUserComponents(Activity activity)
     {
         /* Set Layout Content View  */
@@ -37,7 +42,9 @@ public class AuthenticationActivity extends AppCompatActivity
 
         /* Services Declarations */
         this.util = (Util) new Util();
+        this.services = (Services) new Services(TAG, this);
         this.authenticationService = (AuthenticationService) new AuthenticationService(TAG, this);
+        this.util.requestPermissionsAtOnce(AuthenticationActivity.this);
 
         /* Set Title for action Bar & set title colour */
         Objects.requireNonNull(this.getSupportActionBar()).setElevation(0x0);
@@ -55,7 +62,7 @@ public class AuthenticationActivity extends AppCompatActivity
         this.passwordField = (EditText) this.findViewById(R.id.userpassword);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -93,6 +100,7 @@ public class AuthenticationActivity extends AppCompatActivity
                         this.util.navigate(AuthenticationActivity.this, Application.class);
                     }
                 }
+
                 Log.d(TAG, "onAuthentication: " + email);
 
             case R.id.register:
@@ -106,8 +114,17 @@ public class AuthenticationActivity extends AppCompatActivity
                 {
                     if (!this.authenticationService.isLoggedIn())
                     {
-                        this.authenticationService.registerUser(email, phone, password);
+
+                        this.authenticationService.registerUser(
+                                email,
+                                phone,
+                                password,
+                                this.services.getLocation()[0],
+                                this.services.getLocation()[0]
+                        );
+
                         this.util.navigate(AuthenticationActivity.this, Application.class);
+
                     }
                     else
                     {
@@ -118,5 +135,20 @@ public class AuthenticationActivity extends AppCompatActivity
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+        ActivityCompat.requestPermissions(
+                this,
+                new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                },
+                1
+        );
     }
 }

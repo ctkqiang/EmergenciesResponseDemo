@@ -10,4 +10,6 @@
     <string name="password_needed">Password length must be longer than 5</string>
     <string name="enter_phone_number">Enter Phone Number</string>
     <string name="phone_number_required">Phone Number is required</string>
+    <string name="info">info</string>
+    <string name="send_help">Send Help</string>
 </resources>

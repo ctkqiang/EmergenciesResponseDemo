@@ -20,6 +20,7 @@ import my.com.johnmelody.emergenciesresponsedemo.Constants.ConstantsValues;
 import my.com.johnmelody.emergenciesresponsedemo.R;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.AuthenticationService;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.DatabaseHandler;
+import my.com.johnmelody.emergenciesresponsedemo.Utilities.Services;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.Util;
 
 @SuppressLint("CustomSplashScreen")
@@ -30,10 +31,10 @@ public class SplashActivity extends AppCompatActivity
     public Handler handler;
     private Intent intent;
     private Util util;
+    private Services services;
     private AuthenticationService authenticationService;
 
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -41,7 +42,10 @@ public class SplashActivity extends AppCompatActivity
         this.setContentView(R.layout.activity_splash);
 
         this.util = (Util) new Util();
+        this.services = (Services) new Services(TAG, this);
         this.authenticationService = (AuthenticationService) new AuthenticationService(TAG, this);
+        this.services.requestSecurityPermission(this);
+        this.util.requestPermissionsAtOnce(SplashActivity.this);
 
         /* Set Title for action Bar & set title colour */
         Objects.requireNonNull(this.getSupportActionBar()).setTitle(

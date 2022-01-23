@@ -12,20 +12,29 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.an.deviceinfo.device.model.Battery;
 import com.an.deviceinfo.device.model.Device;
 import com.an.deviceinfo.device.model.Network;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import my.com.johnmelody.emergenciesresponsedemo.Activities.SplashActivity;
-import my.com.johnmelody.emergenciesresponsedemo.Application;
+import my.com.johnmelody.emergenciesresponsedemo.Constants.ConstantsValues;
+
 
 public class Util
 {
@@ -61,7 +70,7 @@ public class Util
 
     public void requestSecurityPermission(Activity activity)
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
             if (ActivityCompat.checkSelfPermission(
                     activity,
@@ -74,8 +83,8 @@ public class Util
                 ActivityCompat.requestPermissions(
                         activity,
                         new String[]{
-                                READ_PHONE_STATE
-                        },
+                                READ_PHONE_STATE,
+                                },
                         0x1
                 );
             }
@@ -149,5 +158,117 @@ public class Util
         Intent intent = (Intent) new Intent(activity, className);
         activity.startActivity(intent);
         activity.finish();
+    }
+
+    /**
+     * @param activity
+     *
+     * @deprecated
+     */
+    @SuppressLint("InlinedApi")
+    public void requestPermission(Activity activity)
+    {
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(activity, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(
+                    activity,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(
+                    activity,
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(
+                    activity,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(activity, Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(activity, Manifest.permission.WAKE_LOCK) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(
+                    activity,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED)
+
+        {
+            this.requestPermissions(
+                    activity,
+                    new String[]{
+                            Manifest.permission.READ_SMS,
+                            Manifest.permission.READ_PHONE_STATE,
+                            Manifest.permission.READ_PHONE_NUMBERS,
+                            Manifest.permission.INTERNET,
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.FOREGROUND_SERVICE,
+                            Manifest.permission.WAKE_LOCK,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    }
+            );
+        }
+
+        this.requestPermissions(
+                activity,
+                new String[]{
+                        Manifest.permission.READ_SMS,
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.READ_PHONE_NUMBERS,
+                        Manifest.permission.INTERNET,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.FOREGROUND_SERVICE,
+                        Manifest.permission.WAKE_LOCK,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                }
+        );
+
+    }
+
+    /**
+     * @param activity
+     * @param permission
+     *
+     * @deprecated
+     */
+    public void requestPermissions(Activity activity, String[] permission)
+    {
+        ActivityCompat.requestPermissions(activity, permission, 1);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    public void requestPermissionsAtOnce(Activity activity)
+    {
+        Dexter.withActivity(activity).withPermissions(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                READ_SMS,
+                READ_PHONE_STATE,
+                READ_PHONE_NUMBERS,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.FOREGROUND_SERVICE,
+                Manifest.permission.WAKE_LOCK,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ).withListener(new MultiplePermissionsListener()
+        {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport report)
+            {
+                Log.d(ConstantsValues.TAG_NAME, "onPermissionsChecked: " + report);
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions,
+                                                           PermissionToken token)
+            {
+                token.continuePermissionRequest();
+            }
+        }).onSameThread().check();
     }
 }

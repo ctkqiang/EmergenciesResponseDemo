@@ -51,7 +51,7 @@ public class AuthenticationService extends Util
         return this.firebaseUser() != null;
     }
 
-    public void registerUser(String email, String phone, String password)
+    public void registerUser(String email, String phone, String password, double longi, double lati)
     {
         this.firebaseAuth()
                 .createUserWithEmailAndPassword(email, password)
@@ -61,7 +61,7 @@ public class AuthenticationService extends Util
                     public void onComplete(@NonNull Task<AuthResult> task)
                     {
 
-                        databaseService().writeUserDetails(email, phone, password, 0, 0, 0);
+                        databaseService().writeUserDetails(email, phone, password, longi, lati, 0);
 
                         showToast(
                                 activity.getApplicationContext(),
@@ -80,7 +80,7 @@ public class AuthenticationService extends Util
 
                 if (databaseHandler.getType() == 0x0)
                 {
-                    databaseService().writeUserDetails(email, phone, password, 0, 0, 0);
+                    databaseService().writeUserDetails(email, phone, password, longi, lati, 0x0);
                 }
 
                 showToast(
@@ -118,4 +118,5 @@ public class AuthenticationService extends Util
             }
         });
     }
+
 }

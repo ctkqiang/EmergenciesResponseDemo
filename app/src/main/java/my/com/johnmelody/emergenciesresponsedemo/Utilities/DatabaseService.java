@@ -5,8 +5,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -62,7 +60,6 @@ public class DatabaseService extends LocalSharedPreference
         this.dataItem = (DataItem) new DataItem(email, phone, password, longi, lati, type);
         this.getDatabaseReference(this.user).child(this.child).setValue(dataItem);
         this.databaseHandler().insertData(email, password, type, phone);
-        /*this.insertUserPhoneNumber(phone);*/
         this.databaseHandler().insertLocationData(String.format("%s,%s", longi, lati));
     }
 
