@@ -533,9 +533,13 @@ public class Application extends AppCompatActivity implements LocationListener, 
     {
         if (item.getItemId() == R.id.action_info)
         {
-            //
         }
 
         return (super.onOptionsItemSelected(item));
+    }
+
+    public void sendHelp(View view)
+    {
+        Log.d(TAG, "sendHelp: ");
     }
 }
