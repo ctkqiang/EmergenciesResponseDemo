@@ -23,6 +23,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
@@ -194,9 +195,17 @@ public class Application extends AppCompatActivity implements LocationListener, 
         /* Send Help functionality */
         Application.this.findViewById(R.id.report).setOnClickListener(new View.OnClickListener()
         {
+            @SuppressLint("ObsoleteSdkInt")
             @Override
             public void onClick(View view)
             {
+                if (android.os.Build.VERSION.SDK_INT > 9)
+                {
+                    StrictMode.ThreadPolicy policy;
+                    policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
+                }
+
                 Application.this.services.broadcastToALl(
                         Application.this.databaseHandler.getPhoneNumber(
                                 Application.this.authenticationService.getCurrentUser()

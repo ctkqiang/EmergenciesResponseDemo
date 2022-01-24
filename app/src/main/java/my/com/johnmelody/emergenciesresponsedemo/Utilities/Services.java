@@ -239,6 +239,7 @@ public class Services extends Util
         try
         {
             okhttp3.Response response = client.newCall(request).execute();
+            Log.d(TAG, "broadCastToActive: " + response);
         }
         catch (IOException e)
         {
