@@ -25,4 +25,9 @@ public class ConstantsValues
     {
         return context.getResources().getString(R.string.firebase_server_key);
     }
+
+    public static String ONE_SIGNAL_TOKEN(Context context)
+    {
+        return context.getResources().getString(R.string.one_signal_token);
+    }
 }

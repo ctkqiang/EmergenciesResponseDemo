@@ -3,6 +3,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal()
         maven { url 'https://mapbox.bintray.com/mapbox' }
     }
     dependencies {

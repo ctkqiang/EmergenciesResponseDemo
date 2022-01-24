@@ -12,4 +12,7 @@
     <string name="phone_number_required">Phone Number is required</string>
     <string name="info">info</string>
     <string name="send_help">Send Help</string>
+    <string name="one_signal_token">42e96cdb-46b2-4d1a-9f73-0fc3e542710e</string>
+    <string name="one_signal_appId">42e96cdb-46b2-4d1a-9f73-0fc3e542710e</string>
+    <string name="one_signal_key">MjQwYmUwZDAtNGU0NC00MDY0LTgyOTEtODE5NDA3MzFiYTk3</string>
 </resources>

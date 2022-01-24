@@ -64,6 +64,7 @@ import java.util.Objects;
 
 import my.com.johnmelody.emergenciesresponsedemo.Constants.ConstantsValues;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.AuthenticationService;
+import my.com.johnmelody.emergenciesresponsedemo.Utilities.DatabaseHandler;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.Services;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.Util;
 import retrofit2.Call;
@@ -79,11 +80,13 @@ public class Application extends AppCompatActivity implements LocationListener, 
     private static final String ICON_SOURCE_ID = "icon-source-id";
     private static final String RED_PIN_ICON_ID = "red-pin-icon-id";
     public static final int REQUEST_LOCATION = 0x1;
+    private AuthenticationService authenticationService;
     protected LocationManager locationManager;
     private MapboxDirections mapboxDirectionsClient;
     private DirectionsRoute currentRoute;
     private FloatingActionButton floatingActionButton;
     private MapboxMap mapboxMap;
+    public DatabaseHandler databaseHandler;
     private Point user;
     private Point help;
     public MapView mapView;
@@ -113,11 +116,10 @@ public class Application extends AppCompatActivity implements LocationListener, 
         services = (Services) new Services(TAG, activity);
         util = (Util) new Util();
 
-        /* TODO TEMP REMOVE */
-        AuthenticationService authenticationService = new AuthenticationService(
-                TAG,
-                this
-        );
+        /* Set Services<?> */
+        this.services.setPushNotificationService();
+        this.databaseHandler = (DatabaseHandler) new DatabaseHandler(this);
+        this.authenticationService = (AuthenticationService) new AuthenticationService(TAG, this);
 
         /* Render Layout Components */
         this.locationView = (TextView) this.findViewById(R.id.currentLocation);
@@ -188,6 +190,33 @@ public class Application extends AppCompatActivity implements LocationListener, 
 
         /* Initialise Location Services */
         Application.this.initializeLocationService();
+
+        /* Send Help functionality */
+        Application.this.findViewById(R.id.report).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Application.this.services.broadcastToALl(
+                        Application.this.databaseHandler.getPhoneNumber(
+                                Application.this.authenticationService.getCurrentUser()
+                        ),
+                        Application.this.services.getLocation()[0],
+                        Application.this.services.getLocation()[1]
+                );
+
+                /**TODO create API web for this**/
+                Application.this.services.broadCastToActive(
+                        Application.this.databaseHandler.getPhoneNumber(
+                                Application.this.authenticationService.getCurrentUser()
+                        ),
+                        Application.this.services.getLocation()[0],
+                        Application.this.services.getLocation()[1]
+                );
+
+                Log.d(TAG, "sendHelp: <<<<<<<<<<<<<<<<<<<<<<<<");
+            }
+        });
     }
 
     public void initiateSource(@NonNull Style loadMapStyle)
@@ -536,10 +565,5 @@ public class Application extends AppCompatActivity implements LocationListener, 
         }
 
         return (super.onOptionsItemSelected(item));
-    }
-
-    public void sendHelp(View view)
-    {
-        Log.d(TAG, "sendHelp: ");
     }
 }
