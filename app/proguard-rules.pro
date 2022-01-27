@@ -18,4 +18,10 @@
 
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
-#-renamesourcefileattribute SourceFile
+-renamesourcefileattribute SourceFile
+
+# Eliminate package name
+-repackageclasses
+
+# keep this class
+-keep public class my.com.johnmelody.emergenciesresponsedemo.R

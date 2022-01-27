@@ -1,9 +1,14 @@
 package my.com.johnmelody.emergenciesresponsedemo.Utilities;
 
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,7 +23,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -30,19 +42,24 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
+import my.com.johnmelody.emergenciesresponsedemo.Application;
 import my.com.johnmelody.emergenciesresponsedemo.Constants.ConstantsValues;
 import my.com.johnmelody.emergenciesresponsedemo.Interfaces.NotificationApi;
-import my.com.johnmelody.emergenciesresponsedemo.Model.Notification;
 import my.com.johnmelody.emergenciesresponsedemo.Model.PushNotification;
 import my.com.johnmelody.emergenciesresponsedemo.R;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -151,8 +168,12 @@ public class Services extends Util
         OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
         OneSignal.initWithContext(this.activity);
         OneSignal.setAppId(ConstantsValues.ONE_SIGNAL_TOKEN(this.activity.getApplicationContext()));
+
     }
 
+    /**
+     * @deprecated
+     */
     public void broadcastToALl(String phone, double longitude, double latitude)
     {
         Retrofit retrofit = new Retrofit.Builder()
@@ -209,41 +230,47 @@ public class Services extends Util
             {
                 Log.d(TAG, ">>>>>>>onFailure: " + t);
             }
+
         });
     }
 
     public void broadCastToActive(String phone, double longitude, double latitude)
     {
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
-        RequestBody body = RequestBody.create(mediaType, "{\r\n  \"app_id\": "
-                                                         + "\"42e96cdb-46b2-4d1a-9f73"
-                                                         + "-0fc3e542710e\",\r\n  "
-                                                         + "\"included_segments\": [\"Subscribed "
-                                                         + "Users\"],\r\n  \"headings\": {\"en\":"
-                                                         + " \"[EMERGENCY]I Need help!\"\"},\r\n "
-                                                         + " \"contents\": "
-                                                         + "{\"en\": \"" + String.format("I am at"
-                                                                                         + " %s%s"
-                                                                                         +
-                                                                                         "|Myinfo"
-                                                                                         + ": %s|", longitude, latitude, phone) + "\"}\r\n}");
-        Request request = new Request.Builder()
-                .url("https://onesignal.com/api/v1/notifications")
-                .method("POST", body)
-                .addHeader("Content-Type", "application/json; charset=utf-8\"")
-                .addHeader("Authorization", "Basic "
-                                            + "MjQwYmUwZDAtNGU0NC00MDY0LTgyOTEtODE5NDA3MzFiYTk3")
-                .build();
-        try
+        NotificationManagerCompat notificationManagerCompat;
+        Notification notification;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
-            okhttp3.Response response = client.newCall(request).execute();
-            Log.d(TAG, "broadCastToActive: " + response);
+            NotificationChannel channel = new NotificationChannel(
+                    "channel",
+                    this.activity.getString(R.string.app_name),
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+
+            NotificationManager manager = (NotificationManager) this.activity.getSystemService(
+                    NotificationManager.class
+            );
+
+            manager.createNotificationChannel(channel);
         }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                this.activity.getApplicationContext(),
+                "channel"
+        );
+
+        builder.setContentTitle(this.activity.getString(R.string.sos));
+        builder.setContentText(String.format("I'm at %s,%s\nh/p:%s", latitude, longitude, phone));
+        builder.setSmallIcon(R.mipmap.emergency_icon);
+        builder.setNumber(1);
+
+        notification = builder.build();
+
+        notificationManagerCompat = NotificationManagerCompat.from(
+                this.activity.getApplicationContext()
+        );
+
+        notificationManagerCompat.notify(1, notification);
+
     }
 }

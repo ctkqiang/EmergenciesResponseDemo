@@ -31,41 +31,38 @@
         android:id="@+id/mapview"
         android:layout_width="match_parent"
         android:layout_height="3.9in"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:ignore="InOrMmUsage">
 
     </com.mapbox.mapboxsdk.maps.MapView>
 
     <Button
-        android:id="@+id/report"
-        android:layout_below="@id/mapview"
+        android:id="@+id/howto"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        app:rippleColor="@color/light_grey"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/report"
+        android:layout_below="@id/mapview"
         android:layout_marginStart="13dp"
-        android:onClick="sendHelp"
         android:layout_marginEnd="13dp"
         android:layout_marginBottom="3dp"
+        android:text="@string/how_this_works"
         android:textColor="@color/black"
-        android:text="@string/send_help" />
+        app:rippleColor="@color/light_grey" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabtn"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="39dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="660dp"
-        android:background="@color/white"
-        android:backgroundTint="@color/white"
-        android:baselineAlignBottom="true"
-        android:outlineSpotShadowColor="@color/black"
-        app:fabSize="normal"
-        app:rippleColor="@color/light_grey"
-        app:srcCompat="@drawable/ic_baseline_info_24"
-        tools:ignore="ContentDescription,UnusedAttribute" />
+    <Button
+        android:id="@+id/report"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@id/mapview"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="13dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="3dp"
+        android:text="@string/send_help"
+        android:textColor="@color/black"
+        app:rippleColor="@color/light_grey" />
+
 
 </RelativeLayout>

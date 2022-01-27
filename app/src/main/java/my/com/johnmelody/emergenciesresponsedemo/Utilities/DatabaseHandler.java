@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 import java.util.ArrayList;
 
@@ -129,11 +130,13 @@ public class DatabaseHandler extends SQLiteOpenHelper
                 phone = cursor.getString(0x0);
             }
 
-            return (phone != null) ? phone : "no-phone-number";
+            return (phone != null) ? phone : "\nno-phone-number";
         }
         finally
         {
             cursor.close();
         }
     }
+
+
 }

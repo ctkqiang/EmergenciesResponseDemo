@@ -15,4 +15,6 @@
     <string name="one_signal_token">42e96cdb-46b2-4d1a-9f73-0fc3e542710e</string>
     <string name="one_signal_appId">42e96cdb-46b2-4d1a-9f73-0fc3e542710e</string>
     <string name="one_signal_key">MjQwYmUwZDAtNGU0NC00MDY0LTgyOTEtODE5NDA3MzFiYTk3</string>
+    <string name="sos">[SOS], I need Help!</string>
+    <string name="how_this_works">How This Works?</string>
 </resources>

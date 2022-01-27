@@ -31,6 +31,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,7 +40,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.MapboxDirections;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
@@ -85,8 +86,8 @@ public class Application extends AppCompatActivity implements LocationListener, 
     protected LocationManager locationManager;
     private MapboxDirections mapboxDirectionsClient;
     private DirectionsRoute currentRoute;
-    private FloatingActionButton floatingActionButton;
     private MapboxMap mapboxMap;
+    private Button tutorial, report;
     public DatabaseHandler databaseHandler;
     private Point user;
     private Point help;
@@ -130,16 +131,31 @@ public class Application extends AppCompatActivity implements LocationListener, 
         this.locationView.setVerticalScrollBarEnabled(true);
         this.locationView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         this.locationView.setMovementMethod(new ScrollingMovementMethod());
-        this.floatingActionButton = (FloatingActionButton) this.findViewById(R.id.fabtn);
-        this.floatingActionButton.setOnClickListener(new View.OnClickListener()
+        this.report = (Button) this.findViewById(R.id.report);
+        this.tutorial = (Button) this.findViewById(R.id.howto);
+        this.report.setOnClickListener(new View.OnClickListener()
         {
-            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view)
             {
-                /* TODO */
+                Application.this.services.broadCastToActive(
+                        Application.this.databaseHandler.getPhoneNumber(
+                                Application.this.authenticationService.getCurrentUser()
+                        ),
+                        Application.this.services.getLocation()[1],
+                        Application.this.services.getLocation()[0]
+                );
 
-                Log.d(TAG, "Sending Help...");
+                Log.d(TAG, "onClick: => report");
+            }
+        });
+
+        this.tutorial.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Log.d(TAG, "onClick: => Tutorial/About");
             }
         });
 
@@ -191,41 +207,6 @@ public class Application extends AppCompatActivity implements LocationListener, 
 
         /* Initialise Location Services */
         Application.this.initializeLocationService();
-
-        /* Send Help functionality */
-        Application.this.findViewById(R.id.report).setOnClickListener(new View.OnClickListener()
-        {
-            @SuppressLint("ObsoleteSdkInt")
-            @Override
-            public void onClick(View view)
-            {
-                if (android.os.Build.VERSION.SDK_INT > 9)
-                {
-                    StrictMode.ThreadPolicy policy;
-                    policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                    StrictMode.setThreadPolicy(policy);
-                }
-
-                Application.this.services.broadcastToALl(
-                        Application.this.databaseHandler.getPhoneNumber(
-                                Application.this.authenticationService.getCurrentUser()
-                        ),
-                        Application.this.services.getLocation()[0],
-                        Application.this.services.getLocation()[1]
-                );
-
-                /**TODO create API web for this**/
-                Application.this.services.broadCastToActive(
-                        Application.this.databaseHandler.getPhoneNumber(
-                                Application.this.authenticationService.getCurrentUser()
-                        ),
-                        Application.this.services.getLocation()[0],
-                        Application.this.services.getLocation()[1]
-                );
-
-                Log.d(TAG, "sendHelp: <<<<<<<<<<<<<<<<<<<<<<<<");
-            }
-        });
     }
 
     public void initiateSource(@NonNull Style loadMapStyle)
@@ -487,6 +468,7 @@ public class Application extends AppCompatActivity implements LocationListener, 
     {
         super.onStart();
         this.mapView.onStart();
+
     }
 
     @Override
