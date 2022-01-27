@@ -16,6 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.UUID;
 
 import my.com.johnmelody.emergenciesresponsedemo.Model.DataItem;
+import my.com.johnmelody.emergenciesresponsedemo.Model.EmergencyItem;
 import my.com.johnmelody.emergenciesresponsedemo.Model.LocationItem;
 import my.com.johnmelody.emergenciesresponsedemo.Model.UserItem;
 
@@ -25,6 +26,7 @@ public class DatabaseService extends LocalSharedPreference
     public String TAG;
     public UserItem userItem;
     public DataItem dataItem;
+    public EmergencyItem emergencyItem;
     public LocationItem locationItem;
     public String user = "user";
     public String emergency = "emergency";
@@ -72,11 +74,25 @@ public class DatabaseService extends LocalSharedPreference
         this.databaseHandler().insertLocationData(String.format("%s,%s", longi, lati));
     }
 
-    public void writeCurrentLocation(double longitude, double latitude)
+    public void writeCurrentLocation(String phone, double longitude, double latitude)
     {
-        String phoneNumber = this.getUserPhoneNumber();
-        this.locationItem = (LocationItem) new LocationItem(longitude, latitude);
-        this.getDatabaseReference(this.emergency).child(phoneNumber).setValue(this.locationItem);
+        this.emergencyItem = (EmergencyItem) new EmergencyItem(
+                util().getCurrentDateTime(),
+                phone,
+                String.valueOf(latitude),
+                String.valueOf(longitude)
+        );
+
+        Log.d(TAG, "writeCurrentLocation: " + this.emergencyItem);
+
+        this.getDatabaseReference(this.emergency).child(this.child).setValue(emergencyItem).addOnCompleteListener(new OnCompleteListener<Void>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+                Log.d(TAG, "=>>>>>>>>>>>>onComplete: " + task.isSuccessful());
+            }
+        });
     }
 
     public void read(String path)

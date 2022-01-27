@@ -130,7 +130,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
                 phone = cursor.getString(0x0);
             }
 
-            return (phone != null) ? phone : "\nno-phone-number";
+            return (phone != null) ? phone : "no-phone-number";
         }
         finally
         {

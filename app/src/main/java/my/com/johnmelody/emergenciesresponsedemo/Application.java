@@ -40,6 +40,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.MapboxDirections;
@@ -67,6 +70,7 @@ import java.util.Objects;
 import my.com.johnmelody.emergenciesresponsedemo.Constants.ConstantsValues;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.AuthenticationService;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.DatabaseHandler;
+import my.com.johnmelody.emergenciesresponsedemo.Utilities.DatabaseService;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.Services;
 import my.com.johnmelody.emergenciesresponsedemo.Utilities.Util;
 import retrofit2.Call;
@@ -89,6 +93,7 @@ public class Application extends AppCompatActivity implements LocationListener, 
     private MapboxMap mapboxMap;
     private Button tutorial, report;
     public DatabaseHandler databaseHandler;
+    public DatabaseService databaseService;
     private Point user;
     private Point help;
     public MapView mapView;
@@ -117,6 +122,7 @@ public class Application extends AppCompatActivity implements LocationListener, 
         /* Set Services & Utilities Initialised */
         services = (Services) new Services(TAG, activity);
         util = (Util) new Util();
+        databaseService = (DatabaseService) new DatabaseService(this, TAG);
 
         /* Set Services<?> */
         this.services.setPushNotificationService();
@@ -138,10 +144,17 @@ public class Application extends AppCompatActivity implements LocationListener, 
             @Override
             public void onClick(View view)
             {
+                String phone = Application.this.databaseHandler.getPhoneNumber(
+                        Application.this.authenticationService.getCurrentUser()
+                );
                 Application.this.services.broadCastToActive(
-                        Application.this.databaseHandler.getPhoneNumber(
-                                Application.this.authenticationService.getCurrentUser()
-                        ),
+                        phone,
+                        Application.this.services.getLocation()[1],
+                        Application.this.services.getLocation()[0]
+                );
+
+                Application.this.databaseService.writeCurrentLocation(
+                        phone,
                         Application.this.services.getLocation()[1],
                         Application.this.services.getLocation()[0]
                 );
@@ -151,6 +164,7 @@ public class Application extends AppCompatActivity implements LocationListener, 
         });
 
         this.tutorial.setOnClickListener(new View.OnClickListener()
+
         {
             @Override
             public void onClick(View view)
@@ -167,9 +181,7 @@ public class Application extends AppCompatActivity implements LocationListener, 
 
         /* Set Action Bar To White Colour */
         Objects.requireNonNull(this.getSupportActionBar()).setBackgroundDrawable(
-                new ColorDrawable(
-                        this.getResources().getColor(R.color.white)
-                )
+                new ColorDrawable(this.getResources().getColor(R.color.white))
         );
 
         /* Set Title for action Bar & set title colour */
@@ -207,6 +219,10 @@ public class Application extends AppCompatActivity implements LocationListener, 
 
         /* Initialise Location Services */
         Application.this.initializeLocationService();
+
+        FirebaseApp.initializeApp(this);
+        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
+        firebaseAppCheck.installAppCheckProviderFactory(SafetyNetAppCheckProviderFactory.getInstance());
     }
 
     public void initiateSource(@NonNull Style loadMapStyle)

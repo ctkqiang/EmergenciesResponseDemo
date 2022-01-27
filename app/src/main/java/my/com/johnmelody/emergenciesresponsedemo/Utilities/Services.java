@@ -260,7 +260,7 @@ public class Services extends Util
         );
 
         builder.setContentTitle(this.activity.getString(R.string.sos));
-        builder.setContentText(String.format("I'm at %s,%s\nh/p:%s", latitude, longitude, phone));
+        builder.setContentText(String.format("Location: %s, %s\nContact: %s", latitude, longitude, phone));
         builder.setSmallIcon(R.mipmap.emergency_icon);
         builder.setNumber(1);
 
@@ -271,6 +271,5 @@ public class Services extends Util
         );
 
         notificationManagerCompat.notify(1, notification);
-
     }
 }

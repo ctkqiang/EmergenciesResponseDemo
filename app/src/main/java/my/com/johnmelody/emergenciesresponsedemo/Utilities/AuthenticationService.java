@@ -12,6 +12,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 import my.com.johnmelody.emergenciesresponsedemo.Constants.ConstantsValues;
 
 public class AuthenticationService extends Util
@@ -43,7 +45,12 @@ public class AuthenticationService extends Util
 
     public String getCurrentUser()
     {
-        return this.firebaseAuth().getCurrentUser().getEmail();
+        if (this.firebaseAuth().getCurrentUser().getEmail() == null)
+        {
+            return "no-email";
+        }
+
+        return Objects.requireNonNull(this.firebaseAuth().getCurrentUser()).getEmail();
     }
 
     public boolean isLoggedIn()
