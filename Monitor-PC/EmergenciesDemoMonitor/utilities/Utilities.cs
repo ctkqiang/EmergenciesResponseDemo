@@ -1,12 +1,11 @@
-﻿using System;
-using System.Diagnostics;
-using static EmergenciesDemoMonitor.Constants;
+﻿using System.Diagnostics;
 
 namespace EmergenciesDemoMonitor.utilities
 {
     public class Utilities
     {
-        public Utilities() {
+        public Utilities()
+        {
         }
 
         public static void log(string Message, bool IsDebug)
