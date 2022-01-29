@@ -1,5 +1,11 @@
 package my.com.johnmelody.emergenciesresponsedemo.Activities;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.READ_PHONE_STATE;
+import static android.Manifest.permission.READ_SMS;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -47,7 +53,6 @@ public class AuthenticationActivity extends AppCompatActivity
         this.services = (Services) new Services(TAG, this);
         this.databaseService = (DatabaseService) new DatabaseService(this, TAG);
         this.authenticationService = (AuthenticationService) new AuthenticationService(TAG, this);
-        this.util.requestPermissionsAtOnce(AuthenticationActivity.this);
 
         /* Set Title for action Bar & set title colour */
         Objects.requireNonNull(this.getSupportActionBar()).setElevation(0x0);
@@ -125,7 +130,7 @@ public class AuthenticationActivity extends AppCompatActivity
                                 this.services.getLocation()[1],
                                 0
                         );
-                        
+
                         this.authenticationService.registerUser(
                                 email,
                                 phone,
@@ -153,13 +158,24 @@ public class AuthenticationActivity extends AppCompatActivity
     {
         super.onStart();
 
-        ActivityCompat.requestPermissions(
-                this,
-                new String[]{
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                },
-                1
-        );
+        if (
+                ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, READ_SMS) != PackageManager.PERMISSION_GRANTED
+        )
+        {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.READ_PHONE_STATE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_SMS,
+                            },
+                    1
+            );
+        }
     }
 }

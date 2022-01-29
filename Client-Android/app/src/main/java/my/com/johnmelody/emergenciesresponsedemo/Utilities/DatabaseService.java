@@ -67,8 +67,8 @@ public class DatabaseService extends LocalSharedPreference
     public void writeUserDetails(String email, String phone, String password, double longi,
                                  double lati, int type)
     {
-        this.dataItem = (DataItem) new DataItem(email, phone, password, longi, lati, type);
-        this.getDatabaseReference(this.user).child(email).setValue(dataItem).addOnCompleteListener(new OnCompleteListener<Void>()
+        this.dataItem = (DataItem) new DataItem(email, phone, util().setToMD5(password), longi, lati, type);
+        this.getDatabaseReference(this.user).child(util().replaceSpecialChar(email)).setValue(dataItem).addOnCompleteListener(new OnCompleteListener<Void>()
         {
             @Override
             public void onComplete(@NonNull Task<Void> task)
@@ -76,7 +76,7 @@ public class DatabaseService extends LocalSharedPreference
                 Log.d(TAG, "=>>>>>>>>>>>>onComplete: " + task.isSuccessful());
             }
         });
-        this.databaseHandler().insertData(email, password, type, phone);
+        this.databaseHandler().insertData(util().replaceSpecialChar(email), password, type, phone);
         this.databaseHandler().insertLocationData(String.format("%s,%s", longi, lati));
     }
 
@@ -92,7 +92,7 @@ public class DatabaseService extends LocalSharedPreference
 
         Log.d(TAG, "writeCurrentLocation: " + this.emergencyItem);
 
-        this.getDatabaseReference(this.emergency).child(currentUser).setValue(emergencyItem).addOnCompleteListener(new OnCompleteListener<Void>()
+        this.getDatabaseReference(this.emergency).child(util().replaceSpecialChar(currentUser)).setValue(emergencyItem).addOnCompleteListener(new OnCompleteListener<Void>()
         {
             @Override
             public void onComplete(@NonNull Task<Void> task)

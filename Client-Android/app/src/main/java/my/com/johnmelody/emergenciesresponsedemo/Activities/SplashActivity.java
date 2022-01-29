@@ -44,8 +44,6 @@ public class SplashActivity extends AppCompatActivity
         this.util = (Util) new Util();
         this.services = (Services) new Services(TAG, this);
         this.authenticationService = (AuthenticationService) new AuthenticationService(TAG, this);
-        this.services.requestSecurityPermission(this);
-        this.util.requestPermissionsAtOnce(SplashActivity.this);
 
         /* Set Title for action Bar & set title colour */
         Objects.requireNonNull(this.getSupportActionBar()).setTitle(
