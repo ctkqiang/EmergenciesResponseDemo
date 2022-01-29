@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
     tools:context=".Activities.SplashActivity">
 
     <ImageView
         android:id="@+id/app"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@mipmap/emergency_icon"
+        android:src="@mipmap/final_app_icon_round"
         android:layout_centerInParent="true"
         tools:ignore="ContentDescription" />
 

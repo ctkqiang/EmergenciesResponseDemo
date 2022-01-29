@@ -25,9 +25,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/emergency_icon"
+        android:icon="@mipmap/final_app_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/emergency_icon_round"
+        android:roundIcon="@mipmap/final_app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EmergenciesResponseDemo"
         tools:ignore="AllowBackup">
@@ -39,6 +39,7 @@
             android:exported="true" />
         <activity
             android:name=".Activities.SplashActivity"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

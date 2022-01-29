@@ -45,12 +45,6 @@ public class SplashActivity extends AppCompatActivity
         this.services = (Services) new Services(TAG, this);
         this.authenticationService = (AuthenticationService) new AuthenticationService(TAG, this);
 
-        /* Set Title for action Bar & set title colour */
-        Objects.requireNonNull(this.getSupportActionBar()).setTitle(
-                Html.fromHtml("<font color='#000000'> </font>")
-        );
-        this.getSupportActionBar().setElevation(0x0);
-
         /* Set Status bar colour to white & Set Status bar icon to black */
         this.getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
         this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);

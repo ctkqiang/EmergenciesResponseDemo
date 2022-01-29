@@ -147,7 +147,8 @@ public class Application extends AppCompatActivity implements LocationListener, 
             @Override
             public void onClick(View view)
             {
-                String phone = Application.this.sharedPreferences.getString("phone", "no-phone-number");
+                String phone = Application.this.sharedPreferences.getString("phone", "no-phone"
+                                                                                     + "-number");
 
                 Application.this.services.broadCastToActive(
                         phone,
@@ -181,19 +182,12 @@ public class Application extends AppCompatActivity implements LocationListener, 
          */
         this.util.requestSecurityPermission(activity);
 
-        /* Set Action Bar To White Colour */
-        Objects.requireNonNull(this.getSupportActionBar()).setBackgroundDrawable(
-                new ColorDrawable(this.getResources().getColor(R.color.white))
-        );
-
         /* Set Title for action Bar & set title colour */
-        this.getSupportActionBar().setTitle(Html.fromHtml("<font color='#000000'>" + ConstantsValues.APP_NAME + "</font>"));
         this.getSupportActionBar().setElevation(0x0);
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
-        this.getSupportActionBar().setLogo(this.getResources().getDrawable(R.drawable.icon));
 
         /* Set Status bar colour to white & Set Status bar icon to black */
-        activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity, R.color.white));
+        activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity, R.color.pink));
         activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         activity.getWindow().makeActive();
         Log.d(TAG, "Application :: renderUserComponents :: getServices ");
@@ -571,6 +565,7 @@ public class Application extends AppCompatActivity implements LocationListener, 
     {
         if (item.getItemId() == R.id.action_info)
         {
+            this.util.showToast(this, "info");
         }
 
         return (super.onOptionsItemSelected(item));

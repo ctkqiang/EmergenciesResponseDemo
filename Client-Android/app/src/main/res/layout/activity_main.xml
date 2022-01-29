@@ -11,7 +11,10 @@
         android:id="@+id/currentLocation"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:backgroundTint="@color/white"
+        android:background="@drawable/border"
+        android:layout_marginStart="13dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginTop="50dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:foregroundGravity="bottom"
@@ -21,8 +24,8 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:maxLines="100"
         android:scrollbars="vertical"
-        android:textAppearance="@color/black"
-        android:textColor="@color/black"
+        android:textAppearance="@color/pink"
+        android:textColor="@color/pink"
         android:textIsSelectable="true"
         android:textSize="11sp"
         tools:ignore="SmallSp" />
@@ -47,8 +50,8 @@
         android:layout_marginEnd="13dp"
         android:layout_marginBottom="3dp"
         android:text="@string/how_this_works"
-        android:textColor="@color/black"
-        app:rippleColor="@color/light_grey" />
+        android:textColor="@color/pink"
+        app:rippleColor="@color/pink" />
 
     <Button
         android:id="@+id/report"
@@ -61,8 +64,8 @@
         android:layout_marginEnd="13dp"
         android:layout_marginBottom="3dp"
         android:text="@string/send_help"
-        android:textColor="@color/black"
-        app:rippleColor="@color/light_grey" />
+        android:textColor="@color/pink"
+        app:rippleColor="@color/pink" />
 
 
 </RelativeLayout>
