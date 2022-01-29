@@ -11,6 +11,7 @@ namespace EmergenciesDemoMonitor
 {
     public partial class Application : Window
     {
+        public static string ErrorMessage = "Unauthorised User";
         public const int STATUS_CODE = 0xC8;
         public string UserUrl = Constants.userEndpoint;
         private static readonly HttpClient client = new HttpClient();
@@ -55,7 +56,7 @@ namespace EmergenciesDemoMonitor
             {
                 Utilities.log(Message: "Status Not [OK]", IsDebug: true);
             }
-            
+
             string? body = await response.Content.ReadAsStringAsync();
 
             JObject? data = JObject.Parse(body);
@@ -88,8 +89,15 @@ namespace EmergenciesDemoMonitor
                     Utilities.log(Message: "...email is invalid", IsDebug: true);
                 }
 
-                await this.GetUser(Url: this.UserUrl);
-
+                if (this.loginEmail.Text == "admin@demo.com")
+                {
+                    Utilities.log(Message: "Access Granted", IsDebug: false);
+                }
+                else
+                {
+                    this.errormessage.Text = ErrorMessage;
+                    Utilities.log(Message: ErrorMessage, IsDebug: false);
+                }
             }
         }
     }
