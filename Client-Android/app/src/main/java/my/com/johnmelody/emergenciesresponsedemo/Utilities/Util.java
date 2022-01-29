@@ -342,7 +342,7 @@ public class Util
 
     public void Call(Activity activity, String phone)
     {
-        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        Intent callIntent = new Intent(Intent.ACTION_DIAL);
         callIntent.setData(Uri.parse("tel:" + phone));
         activity.startActivity(callIntent);
     }

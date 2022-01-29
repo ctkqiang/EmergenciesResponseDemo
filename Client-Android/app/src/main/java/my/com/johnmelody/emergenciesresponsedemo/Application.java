@@ -1,5 +1,10 @@
 package my.com.johnmelody.emergenciesresponsedemo;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.CALL_PHONE;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.READ_PHONE_STATE;
+import static android.Manifest.permission.READ_SMS;
 import static com.mapbox.core.constants.Constants.PRECISION_6;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
@@ -174,9 +179,7 @@ public class Application extends AppCompatActivity implements LocationListener, 
             @Override
             public void onClick(View view)
             {
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse("tel:999"));
-                Application.this.startActivity(callIntent);
+                Application.this.util.Call(Application.this, "999");
                 Log.d(TAG, "Calling Authority");
             }
         });
@@ -484,6 +487,30 @@ public class Application extends AppCompatActivity implements LocationListener, 
     protected void onStart()
     {
         super.onStart();
+
+
+        if (
+                ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, CALL_PHONE) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, READ_SMS) != PackageManager.PERMISSION_GRANTED
+        )
+        {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.READ_PHONE_STATE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_SMS,
+                            Manifest.permission.CALL_PHONE,
+                            },
+                    1
+            );
+        }
+
         this.mapView.onStart();
 
     }
@@ -537,22 +564,6 @@ public class Application extends AppCompatActivity implements LocationListener, 
                 );
             }
         });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults)
-    {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode)
-        {
-            case 100:
-                Application.this.util.getPhoneInfo(Application.this);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + requestCode);
-        }
-
     }
 
     @Override

@@ -2,6 +2,7 @@ package my.com.johnmelody.emergenciesresponsedemo.Activities;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.CALL_PHONE;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.READ_PHONE_STATE;
 import static android.Manifest.permission.READ_SMS;
@@ -167,6 +168,7 @@ public class AuthenticationActivity extends AppCompatActivity
                 ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, CALL_PHONE) != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, READ_SMS) != PackageManager.PERMISSION_GRANTED
         )
         {
@@ -178,6 +180,7 @@ public class AuthenticationActivity extends AppCompatActivity
                             Manifest.permission.READ_PHONE_STATE,
                             Manifest.permission.READ_EXTERNAL_STORAGE,
                             Manifest.permission.READ_SMS,
+                            Manifest.permission.CALL_PHONE,
                             },
                     1
             );
