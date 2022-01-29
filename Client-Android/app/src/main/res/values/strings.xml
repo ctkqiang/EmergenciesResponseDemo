@@ -11,11 +11,13 @@
     <string name="enter_phone_number">Enter Phone Number</string>
     <string name="phone_number_required">Phone Number is required</string>
     <string name="info">info</string>
-    <string name="send_help">Send Help</string>
+    <string name="send_help">Broadcast Emergency</string>
     <string name="one_signal_token">42e96cdb-46b2-4d1a-9f73-0fc3e542710e</string>
     <string name="one_signal_appId">42e96cdb-46b2-4d1a-9f73-0fc3e542710e</string>
     <string name="one_signal_key">MjQwYmUwZDAtNGU0NC00MDY0LTgyOTEtODE5NDA3MzFiYTk3</string>
     <string name="sos">[SOS], SENDING HELP...</string>
     <string name="how_this_works">How This Works?</string>
     <string name="user_endpoint">https://opensourceprojects-44592-default-rtdb.firebaseio.com/user.json</string>
+    <string name="call_the_police">Call The Police</string>
+    <string name="police">999</string>
 </resources>

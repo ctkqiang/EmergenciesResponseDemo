@@ -14,6 +14,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -21,6 +22,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -90,7 +92,7 @@ public class Application extends AppCompatActivity implements LocationListener, 
     private MapboxDirections mapboxDirectionsClient;
     private DirectionsRoute currentRoute;
     private MapboxMap mapboxMap;
-    private Button tutorial, report;
+    private Button callpolice, report;
     public DatabaseHandler databaseHandler;
     public DatabaseService databaseService;
     private Point user;
@@ -141,7 +143,7 @@ public class Application extends AppCompatActivity implements LocationListener, 
         this.locationView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         this.locationView.setMovementMethod(new ScrollingMovementMethod());
         this.report = (Button) this.findViewById(R.id.report);
-        this.tutorial = (Button) this.findViewById(R.id.howto);
+        this.callpolice = (Button) this.findViewById(R.id.howto);
         this.report.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -166,13 +168,16 @@ public class Application extends AppCompatActivity implements LocationListener, 
             }
         });
 
-        this.tutorial.setOnClickListener(new View.OnClickListener()
+        this.callpolice.setOnClickListener(new View.OnClickListener()
 
         {
             @Override
             public void onClick(View view)
             {
-                Log.d(TAG, "onClick: => Tutorial/About");
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:999"));
+                Application.this.startActivity(callIntent);
+                Log.d(TAG, "Calling Authority");
             }
         });
 
@@ -488,7 +493,6 @@ public class Application extends AppCompatActivity implements LocationListener, 
     {
         super.onStop();
         this.mapView.onStop();
-
     }
 
     @Override

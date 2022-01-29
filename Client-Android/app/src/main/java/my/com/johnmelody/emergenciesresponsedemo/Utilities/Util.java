@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -337,5 +338,12 @@ public class Util
                 token.continuePermissionRequest();
             }
         }).onSameThread().check();
+    }
+
+    public void Call(Activity activity, String phone)
+    {
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:" + phone));
+        activity.startActivity(callIntent);
     }
 }
