@@ -19,3 +19,5 @@ C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-
 C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-PC\EmergenciesDemoMonitor\obj\Debug\net6.0-windows\EmergenciesDemoMonitor.genruntimeconfig.cache
 C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-PC\EmergenciesDemoMonitor\obj\Debug\net6.0-windows\Application.g.cs
 C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-PC\EmergenciesDemoMonitor\obj\Debug\net6.0-windows\Application.baml
+C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-PC\EmergenciesDemoMonitor\bin\Debug\net6.0-windows\Newtonsoft.Json.dll
+C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-PC\EmergenciesDemoMonitor\obj\Debug\net6.0-windows\EmergenciesDemoMonitor.csproj.CopyComplete

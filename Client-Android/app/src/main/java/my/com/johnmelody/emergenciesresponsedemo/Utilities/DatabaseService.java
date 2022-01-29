@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,7 +32,6 @@ public class DatabaseService extends LocalSharedPreference
     public LocationItem locationItem;
     public String user = "user";
     public String emergency = "emergency";
-    public String child = UUID.randomUUID().toString();
 
     private Util util()
     {
@@ -48,6 +49,11 @@ public class DatabaseService extends LocalSharedPreference
         return new DatabaseHandler(this.activity.getApplicationContext());
     }
 
+    public FirebaseAuth firebaseAuth()
+    {
+        return FirebaseAuth.getInstance();
+    }
+
     public FirebaseDatabase database()
     {
         return FirebaseDatabase.getInstance();
@@ -62,7 +68,7 @@ public class DatabaseService extends LocalSharedPreference
                                  double lati, int type)
     {
         this.dataItem = (DataItem) new DataItem(email, phone, password, longi, lati, type);
-        this.getDatabaseReference(this.user).child(this.child).setValue(dataItem).addOnCompleteListener(new OnCompleteListener<Void>()
+        this.getDatabaseReference(this.user).child(email).setValue(dataItem).addOnCompleteListener(new OnCompleteListener<Void>()
         {
             @Override
             public void onComplete(@NonNull Task<Void> task)
@@ -76,6 +82,7 @@ public class DatabaseService extends LocalSharedPreference
 
     public void writeCurrentLocation(String phone, double longitude, double latitude)
     {
+        String currentUser = this.firebaseAuth().getCurrentUser().getEmail();
         this.emergencyItem = (EmergencyItem) new EmergencyItem(
                 util().getCurrentDateTime(),
                 phone,
@@ -85,7 +92,7 @@ public class DatabaseService extends LocalSharedPreference
 
         Log.d(TAG, "writeCurrentLocation: " + this.emergencyItem);
 
-        this.getDatabaseReference(this.emergency).child(this.child).setValue(emergencyItem).addOnCompleteListener(new OnCompleteListener<Void>()
+        this.getDatabaseReference(this.emergency).child(currentUser).setValue(emergencyItem).addOnCompleteListener(new OnCompleteListener<Void>()
         {
             @Override
             public void onComplete(@NonNull Task<Void> task)

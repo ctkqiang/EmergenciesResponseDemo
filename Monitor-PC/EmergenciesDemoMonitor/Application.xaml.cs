@@ -1,4 +1,5 @@
 ﻿using EmergenciesDemoMonitor.utilities;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -27,7 +28,6 @@ namespace EmergenciesDemoMonitor
             this.login.Content = "LOGIN";
         }
 
-
         public static bool IsEmailValid(String email)
         {
             if (!(Regex.IsMatch(
@@ -43,16 +43,27 @@ namespace EmergenciesDemoMonitor
 
         private async Task<string> GetUser(string Url)
         {
+
+
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            Task<string> stringTask = client.GetStringAsync(Url);
+            HttpResponseMessage? response = await client.GetAsync(Url);
+            response.EnsureSuccessStatusCode();
 
-            string? body = await stringTask;
+            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                Utilities.log(Message: "Status Not [OK]", IsDebug: true);
+            }
+            
+            string? body = await response.Content.ReadAsStringAsync();
 
-            Utilities.log(Message: body, IsDebug: true);
+            JObject? data = JObject.Parse(body);
 
-            return body;
+            Utilities.log(Message: data["4cc44069-6413-466b-a888-ba6738562086"].ToString(), IsDebug: true);
+
+            return data.ToString();
+
         }
 
         private async void Login(object sender, RoutedEventArgs routedEventArgs)
@@ -77,9 +88,8 @@ namespace EmergenciesDemoMonitor
                     Utilities.log(Message: "...email is invalid", IsDebug: true);
                 }
 
-                string? result = await this.GetUser(Url: this.UserUrl);
+                await this.GetUser(Url: this.UserUrl);
 
-                Utilities.log(Message: result, IsDebug: true);
             }
         }
     }
