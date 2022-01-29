@@ -17,4 +17,5 @@
     <string name="one_signal_key">MjQwYmUwZDAtNGU0NC00MDY0LTgyOTEtODE5NDA3MzFiYTk3</string>
     <string name="sos">[SOS], SENDING HELP...</string>
     <string name="how_this_works">How This Works?</string>
+    <string name="user_endpoint">https://opensourceprojects-44592-default-rtdb.firebaseio.com/user.json</string>
 </resources>

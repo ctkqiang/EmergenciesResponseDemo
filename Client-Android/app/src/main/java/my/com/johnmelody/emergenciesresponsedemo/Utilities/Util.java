@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -132,6 +133,31 @@ public class Util
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @SuppressLint("HardwareIds")
+    public String getNumber(Activity activity)
+    {
+        TelephonyManager telephonyManager;
+        telephonyManager = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(activity, READ_SMS) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(activity, READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(activity, READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(
+                    activity,
+                    new String[]{
+                            READ_PHONE_STATE,
+                            READ_SMS,
+                            READ_PHONE_NUMBERS,
+                            },
+                    0x1
+            );
+        }
+        String phone = telephonyManager.getLine1Number();
+
+        return phone.isEmpty() ? "No-Phone-Number" : phone;
+    }
+
     @SuppressLint({"InlinedApi", "HardwareIds", "DefaultLocale"})
     public ArrayList<String> getPhoneInfo(Activity activity)
     {
@@ -153,7 +179,7 @@ public class Util
                                 READ_PHONE_NUMBERS,
                                 READ_PHONE_STATE
                         },
-                        100
+                        0x1
                 );
             }
         }

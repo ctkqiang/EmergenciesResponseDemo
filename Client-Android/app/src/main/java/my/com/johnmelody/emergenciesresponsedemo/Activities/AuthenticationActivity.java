@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ public class AuthenticationActivity extends AppCompatActivity
     private EditText emailField, phoneField, passwordField;
     private AuthenticationService authenticationService;
     private DatabaseService databaseService;
+    public SharedPreferences sharedPreferences;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     public void renderUserComponents(Activity activity)
@@ -53,6 +55,7 @@ public class AuthenticationActivity extends AppCompatActivity
         this.services = (Services) new Services(TAG, this);
         this.databaseService = (DatabaseService) new DatabaseService(this, TAG);
         this.authenticationService = (AuthenticationService) new AuthenticationService(TAG, this);
+        this.sharedPreferences = this.getSharedPreferences("myPref", MODE_PRIVATE);
 
         /* Set Title for action Bar & set title colour */
         Objects.requireNonNull(this.getSupportActionBar()).setElevation(0x0);
@@ -100,6 +103,7 @@ public class AuthenticationActivity extends AppCompatActivity
                 {
                     if (!this.authenticationService.isLoggedIn())
                     {
+                        this.sharedPreferences.edit().putString("phone", phone).apply();
                         this.authenticationService.loginUser(email, password);
                         this.util.navigate(AuthenticationActivity.this, Application.class);
                     }
@@ -122,6 +126,7 @@ public class AuthenticationActivity extends AppCompatActivity
                 {
                     if (!this.authenticationService.isLoggedIn())
                     {
+                        this.sharedPreferences.edit().putString("phone", phone).apply();
                         this.databaseService.writeUserDetails(
                                 email,
                                 phone,

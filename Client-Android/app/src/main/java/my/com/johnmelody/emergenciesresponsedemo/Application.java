@@ -14,6 +14,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -23,7 +24,6 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.StrictMode;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
@@ -43,7 +43,6 @@ import androidx.core.content.ContextCompat;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory;
-import com.google.firebase.auth.FirebaseAuth;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.MapboxDirections;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
@@ -100,6 +99,7 @@ public class Application extends AppCompatActivity implements LocationListener, 
     public TextView locationView;
     public Services services;
     public Util util;
+    public SharedPreferences sharedPreferences;
 
     public void initializeLocationService()
     {
@@ -124,6 +124,9 @@ public class Application extends AppCompatActivity implements LocationListener, 
         util = (Util) new Util();
         databaseService = (DatabaseService) new DatabaseService(this, TAG);
 
+        /* Set Shared Preferences */
+        this.sharedPreferences = this.getSharedPreferences("myPref", MODE_PRIVATE);
+
         /* Set Services<?> */
         this.services.setPushNotificationService();
         this.databaseHandler = (DatabaseHandler) new DatabaseHandler(this);
@@ -144,9 +147,8 @@ public class Application extends AppCompatActivity implements LocationListener, 
             @Override
             public void onClick(View view)
             {
-                String phone = Application.this.databaseHandler.getPhoneNumber(
-                        Application.this.authenticationService.getCurrentUser()
-                );
+                String phone = Application.this.sharedPreferences.getString("phone", "no-phone-number");
+
                 Application.this.services.broadCastToActive(
                         phone,
                         Application.this.services.getLocation()[1],
