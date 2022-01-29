@@ -60,7 +60,7 @@ namespace EmergenciesDemoMonitor
 
             JObject? data = JObject.Parse(body);
 
-            Utilities.log(Message: data["4cc44069-6413-466b-a888-ba6738562086"].ToString(), IsDebug: true);
+            Utilities.log(Message: data[propertyName: this.loginEmail.Text].ToString(), IsDebug: true);
 
             return data.ToString();
 
