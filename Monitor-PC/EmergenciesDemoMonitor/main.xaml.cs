@@ -1,19 +1,13 @@
-﻿using EmergenciesDemoMonitor.utilities;
+﻿using EmergenciesDemoMonitor.model;
+using EmergenciesDemoMonitor.utilities;
+using Nancy.Responses;
+using ServiceStack;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace EmergenciesDemoMonitor
 {
@@ -29,6 +23,17 @@ namespace EmergenciesDemoMonitor
             return new HttpClient();
         }
 
+        public void Refresh(object sender, RoutedEventArgs routedEventArgs)
+        {
+            Utilities.log(Message: "Refreshing...", IsDebug: false);
+
+            Task? refresh = this.GetEmergenciesBroadcast();
+            refresh.ContinueWith(t =>
+            {
+                MessageBox.Show("Ok");
+            });
+        }
+
         private async Task GetEmergenciesBroadcast()
         {
             try
@@ -36,11 +41,17 @@ namespace EmergenciesDemoMonitor
                 HttpResponseMessage? response = await httpClient().GetAsync(Constants.emergenciesEndpoint);
                 string jsonReponse = await response.Content.ReadAsStringAsync();
 
-                Utilities.log(Message: jsonReponse, IsDebug: true);
+                var body = Constants.emergenciesEndpoint.GetJsonFromUrl().FromJson<Emergencies>();
+
+                Emergencies emergencies = JsonSerializer.Deserialize<Emergencies>(json: jsonReponse);
+
+                MessageBox.Show(jsonReponse.ToJson());
+
+                Utilities.log(Message: body.ToJson(), IsDebug: true);
             }
             catch (Exception e)
             {
-                Utilities.log(Message: e. ToString(), IsDebug: true);
+                Utilities.log(Message: e.ToString(), IsDebug: true);
             }
         }
     }

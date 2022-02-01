@@ -37,3 +37,8 @@ C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-
 C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-PC\EmergenciesDemoMonitor\obj\Debug\net6.0-windows\App.baml
 C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-PC\EmergenciesDemoMonitor\obj\Debug\net6.0-windows\main.g.cs
 C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-PC\EmergenciesDemoMonitor\obj\Debug\net6.0-windows\main.baml
+C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-PC\EmergenciesDemoMonitor\bin\Debug\net6.0-windows\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-PC\EmergenciesDemoMonitor\bin\Debug\net6.0-windows\Microsoft.Extensions.DependencyModel.dll
+C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-PC\EmergenciesDemoMonitor\bin\Debug\net6.0-windows\Microsoft.Extensions.PlatformAbstractions.dll
+C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-PC\EmergenciesDemoMonitor\bin\Debug\net6.0-windows\Nancy.dll
+C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-PC\EmergenciesDemoMonitor\bin\Debug\net6.0-windows\ServiceStack.Text.dll
