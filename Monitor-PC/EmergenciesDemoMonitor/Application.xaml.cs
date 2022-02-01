@@ -6,6 +6,9 @@ using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 
 namespace EmergenciesDemoMonitor
 {
@@ -44,8 +47,6 @@ namespace EmergenciesDemoMonitor
 
         private async Task<string> GetUser(string Url)
         {
-
-
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -65,6 +66,20 @@ namespace EmergenciesDemoMonitor
 
             return data.ToString();
 
+        }
+
+        private void SetLogo()
+        {
+            Image dynamicImage = new Image();
+            dynamicImage.Width = 0x64;
+            dynamicImage.Height = 0x64;
+
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri("pack://application:,,,/icon.ico");
+            bitmap.EndInit();
+
+            dynamicImage.Source = bitmap;
         }
 
         private async void Login(object sender, RoutedEventArgs routedEventArgs)
@@ -92,6 +107,12 @@ namespace EmergenciesDemoMonitor
                 if (this.loginEmail.Text == "admin@demo.com")
                 {
                     Utilities.log(Message: "Access Granted", IsDebug: false);
+                    this.Hide();
+                    new main().ShowDialog();
+
+                    ApplicationPage.NavigationService.Navigate(new Uri("ReportPage.xaml", UriKind.Relative));
+
+                    Utilities.log(Message: "Navigating", IsDebug: true);
                 }
                 else
                 {

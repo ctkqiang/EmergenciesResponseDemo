@@ -1,9 +1,20 @@
 {
   "version": 2,
-  "dgSpecHash": "7sNVlt6BAP5L++HXz59klyIDG3KcexRfI6jpg+n9/zMknEOYFQWDTwr37ZBxvYMCwQYGNznbE0ykUClm/BmP2g==",
+  "dgSpecHash": "beCTKiMVbXKyhPYa0atTFeZbAL54jIuYYdLQjFOzRQ3cYdHhVz1X+xeilR4krHcTT8Yb+KhTFzCII9Hda38gSw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Johnmelodyme\\Documents\\AndroidProjects\\EmergenciesResponseDemo\\Monitor-PC\\EmergenciesDemoMonitor\\EmergenciesDemoMonitor.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Johnmelodyme\\.nuget\\packages\\materialdesigncolors\\2.0.4\\materialdesigncolors.2.0.4.nupkg.sha512",
+    "C:\\Users\\Johnmelodyme\\.nuget\\packages\\materialdesignthemes\\4.3.0\\materialdesignthemes.4.3.0.nupkg.sha512",
+    "C:\\Users\\Johnmelodyme\\.nuget\\packages\\microsoft.extensions.configuration\\5.0.0\\microsoft.extensions.configuration.5.0.0.nupkg.sha512",
+    "C:\\Users\\Johnmelodyme\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\5.0.0\\microsoft.extensions.configuration.abstractions.5.0.0.nupkg.sha512",
+    "C:\\Users\\Johnmelodyme\\.nuget\\packages\\microsoft.extensions.configuration.fileextensions\\5.0.0\\microsoft.extensions.configuration.fileextensions.5.0.0.nupkg.sha512",
+    "C:\\Users\\Johnmelodyme\\.nuget\\packages\\microsoft.extensions.configuration.json\\5.0.0\\microsoft.extensions.configuration.json.5.0.0.nupkg.sha512",
+    "C:\\Users\\Johnmelodyme\\.nuget\\packages\\microsoft.extensions.configuration.usersecrets\\5.0.0\\microsoft.extensions.configuration.usersecrets.5.0.0.nupkg.sha512",
+    "C:\\Users\\Johnmelodyme\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\5.0.0\\microsoft.extensions.fileproviders.abstractions.5.0.0.nupkg.sha512",
+    "C:\\Users\\Johnmelodyme\\.nuget\\packages\\microsoft.extensions.fileproviders.physical\\5.0.0\\microsoft.extensions.fileproviders.physical.5.0.0.nupkg.sha512",
+    "C:\\Users\\Johnmelodyme\\.nuget\\packages\\microsoft.extensions.filesystemglobbing\\5.0.0\\microsoft.extensions.filesystemglobbing.5.0.0.nupkg.sha512",
+    "C:\\Users\\Johnmelodyme\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.0\\microsoft.extensions.primitives.5.0.0.nupkg.sha512",
     "C:\\Users\\Johnmelodyme\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
   ],
   "logs": []

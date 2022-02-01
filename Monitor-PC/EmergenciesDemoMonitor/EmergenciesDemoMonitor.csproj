@@ -5,13 +5,20 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <UserSecretsId>9383ee18-2aa1-4db4-abd5-213cc2222e81</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="assets\" />
+    <None Remove="icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
