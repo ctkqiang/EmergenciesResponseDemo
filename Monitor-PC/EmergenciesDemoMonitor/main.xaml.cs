@@ -1,6 +1,9 @@
-﻿using System;
+﻿using EmergenciesDemoMonitor.utilities;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,14 +17,31 @@ using System.Windows.Shapes;
 
 namespace EmergenciesDemoMonitor
 {
-    /// <summary>
-    /// Interaction logic for main.xaml
-    /// </summary>
     public partial class main : Window
     {
         public main()
         {
             InitializeComponent();
+        }
+
+        public HttpClient httpClient()
+        {
+            return new HttpClient();
+        }
+
+        private async Task GetEmergenciesBroadcast()
+        {
+            try
+            {
+                HttpResponseMessage? response = await httpClient().GetAsync(Constants.emergenciesEndpoint);
+                string jsonReponse = await response.Content.ReadAsStringAsync();
+
+                Utilities.log(Message: jsonReponse, IsDebug: true);
+            }
+            catch (Exception e)
+            {
+                Utilities.log(Message: e. ToString(), IsDebug: true);
+            }
         }
     }
 }

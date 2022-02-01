@@ -82,7 +82,7 @@ namespace EmergenciesDemoMonitor
             dynamicImage.Source = bitmap;
         }
 
-        private async void Login(object sender, RoutedEventArgs routedEventArgs)
+        private void Login(object sender, RoutedEventArgs routedEventArgs)
         {
             Utilities.log(Message: "...login", IsDebug: false);
 

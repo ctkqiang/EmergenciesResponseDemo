@@ -13,7 +13,15 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Emergencies Response Monitor" Height="500" Icon="icon.ico" Width="900" ResizeMode="NoResize">
-    <Grid>
-        
+    <Grid Margin="10,10,10,10">
+        <ListView d:ItemsSource="{d:SampleData ItemCount=5}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" FontSize="17" TextWrapping="Wrap" Text="These are the emergencies request from users." VerticalAlignment="Top"/>
+        <Button Content="Refresh" BorderBrush="#fc5c7c" Click="Refresh" Background="#fc5c7c" HorizontalAlignment="Left" Margin="650,4,0,0" VerticalAlignment="Top" Width="220"/>
     </Grid>
 </Window>
