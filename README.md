@@ -17,3 +17,12 @@ You may not, except with our express written permission, distribute or commercia
 content. Nor may you transmit it or store it in any other website or other form of electronic
 retrieval system.
 ```
+
+
+<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:6894671295250857984?compact=1" height="284" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+
+
+### Download
+
+[Click to Download the Client App (android)](https://github.com/johnmelodyme/EmergenciesResponseDemo/releases/download/1.1.1/app-release.apk)
+[Click to Download the Monitor App (windows)](https://github.com/johnmelodyme/EmergenciesResponseDemo/releases/download/MonitorApp/EmergenciesDemo-Monitor.zip)
