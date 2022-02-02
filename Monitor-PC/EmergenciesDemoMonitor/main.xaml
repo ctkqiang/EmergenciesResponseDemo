@@ -5,18 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EmergenciesDemoMonitor"
         mc:Ignorable="d"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.Foreground="Black"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        Background="{DynamicResource MaterialDesignPaper}"
+        Background="White"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Emergencies Response Monitor" Height="500" Icon="icon.ico" Width="900" ResizeMode="NoResize">
-    <Grid Margin="10,10,10,10">
+    <Grid Margin="10,10,10,10" Background="White">
         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" FontSize="17" TextWrapping="Wrap" Text="These are the emergencies request from users." VerticalAlignment="Top"/>
         <Button Content="Refresh" BorderBrush="#fc5c7c" Click="Refresh" Background="#fc5c7c" HorizontalAlignment="Left" Margin="650,4,0,0" VerticalAlignment="Top" Width="220"/>
-        <Button Content="Download" BorderBrush="#fc5c7c" Click="Download" Background="#fc5c7c" HorizontalAlignment="Left" Margin="412,4,0,0" VerticalAlignment="Top" Width="220"/>
+        <Button Content="Download" Visibility="Hidden" BorderBrush="#fc5c7c" Click="Download" Background="#fc5c7c" HorizontalAlignment="Left" Margin="412,4,0,0" VerticalAlignment="Top" Width="220"/>
         <TextBox x:Name="result" HorizontalAlignment="Left" Margin="10,41,0,0" TextWrapping="Wrap" Text="Press Refresh To Get Latest Data" VerticalAlignment="Top" Width="845" Height="392"/>
     </Grid>
 </Window>

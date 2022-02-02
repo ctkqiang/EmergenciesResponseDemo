@@ -11,7 +11,7 @@
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        Background="{DynamicResource MaterialDesignPaper}"
+        Background="White"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Emergencies Response Monitor" Height="550" Icon="icon.ico" Width="300" ResizeMode="NoResize">
     <Grid Background="{DynamicResource MaterialDesignPaper}" Margin="10,71,10,39">
