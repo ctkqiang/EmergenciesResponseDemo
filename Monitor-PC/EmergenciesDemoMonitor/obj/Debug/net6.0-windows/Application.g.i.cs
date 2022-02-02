@@ -112,7 +112,7 @@ namespace EmergenciesDemoMonitor {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/EmergenciesDemoMonitor;component/application.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/EmergenciesDemoMonitor;V1.0.0.0;component/application.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\Application.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

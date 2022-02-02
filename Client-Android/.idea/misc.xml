@@ -4,8 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Johnmelodyme/Documents/AndroidProjects/EmergenciesResponseDemo/Client-Android/app/src/main/res/drawable/border.xml" value="0.1" />
+        <entry key="..\:/Users/Johnmelodyme/Documents/AndroidProjects/EmergenciesResponseDemo/Client-Android/app/src/main/res/drawable/buyme.xml" value="0.177" />
+        <entry key="..\:/Users/Johnmelodyme/Documents/AndroidProjects/EmergenciesResponseDemo/Client-Android/app/src/main/res/layout-v23/custom_alert.xml" value="0.15443840579710144" />
+        <entry key="..\:/Users/Johnmelodyme/Documents/AndroidProjects/EmergenciesResponseDemo/Client-Android/app/src/main/res/layout/activity_authentication.xml" value="0.1" />
         <entry key="..\:/Users/Johnmelodyme/Documents/AndroidProjects/EmergenciesResponseDemo/Client-Android/app/src/main/res/layout/activity_main.xml" value="0.15443840579710144" />
         <entry key="..\:/Users/Johnmelodyme/Documents/AndroidProjects/EmergenciesResponseDemo/Client-Android/app/src/main/res/layout/activity_splash.xml" value="0.1" />
+        <entry key="..\:/Users/Johnmelodyme/Documents/AndroidProjects/EmergenciesResponseDemo/Client-Android/app/src/main/res/layout/custom_alert.xml" value="0.15443840579710144" />
         <entry key="..\:/Users/Johnmelodyme/Documents/AndroidProjects/EmergenciesResponseDemo/app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.20260416666666667" />
         <entry key="..\:/Users/Johnmelodyme/Documents/AndroidProjects/EmergenciesResponseDemo/app/src/main/res/layout/activity_authentication.xml" value="0.1" />
         <entry key="..\:/Users/Johnmelodyme/Documents/AndroidProjects/EmergenciesResponseDemo/app/src/main/res/layout/activity_main.xml" value="0.18" />

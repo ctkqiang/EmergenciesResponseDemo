@@ -20,4 +20,6 @@
     <string name="user_endpoint">https://opensourceprojects-44592-default-rtdb.firebaseio.com/user.json</string>
     <string name="call_the_police">Call The Police</string>
     <string name="police">999</string>
+    <string name="this_demo_is_developed_by_john_melody_me">This demo is developed by John Melody Me</string>
+    <string name="buy_me_coffee_url">https://www.buymeacoffee.com/johnmelodymel</string>
 </resources>
