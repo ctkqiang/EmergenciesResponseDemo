@@ -42,3 +42,5 @@ C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-
 C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-PC\EmergenciesDemoMonitor\bin\Debug\net6.0-windows\Microsoft.Extensions.PlatformAbstractions.dll
 C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-PC\EmergenciesDemoMonitor\bin\Debug\net6.0-windows\Nancy.dll
 C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-PC\EmergenciesDemoMonitor\bin\Debug\net6.0-windows\ServiceStack.Text.dll
+C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-PC\EmergenciesDemoMonitor\bin\Debug\net6.0-windows\Aspose.Cells.dll
+C:\Users\Johnmelodyme\Documents\AndroidProjects\EmergenciesResponseDemo\Monitor-PC\EmergenciesDemoMonitor\bin\Debug\net6.0-windows\Microsoft.AspNet.SignalR.Core.dll
