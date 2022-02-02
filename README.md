@@ -17,10 +17,10 @@ You may not, except with our express written permission, distribute or commercia
 content. Nor may you transmit it or store it in any other website or other form of electronic
 retrieval system.
 ```
-
-
-<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:6894671295250857984?compact=1" height="284" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
-
+### Click the video below to watch demo
+[![DEMO](
+https://pbs.twimg.com/media/FKc9FunUcAMEBRC?format=jpg&name=large)](
+https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:6894671295250857984?compact=1 "Linkedin")
 
 ### Download
 
