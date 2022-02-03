@@ -1,41 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp">
-
-    <TextView
-        android:id="@+id/bout"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="13dp"
-        android:gravity="center_vertical"
-        android:text="@string/this_demo_is_developed_by_john_melody_me"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        tools:ignore="RtlCompat" />
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/link"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@id/bout"
+        android:layout_height="40dp"
         android:layout_marginTop="13dp"
+        android:layout_marginBottom="13dp"
         android:gravity="center_vertical"
+        android:hapticFeedbackEnabled="true"
         android:text="@string/click_here"
         android:textAlignment="center"
-        android:textColor="@color/mapbox_blue"
+        android:textColor="@android:color/holo_blue_dark"
         tools:ignore="RtlCompat" />
 
     <ImageButton
         android:id="@+id/buymecoffee"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_below="@id/link"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="30dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="23dp"
+        android:layout_marginEnd="23dp"
+        android:layout_marginBottom="13dp"
         android:foreground="@drawable/buymecoffee"
-        android:src="@drawable/buyme"
+        android:hapticFeedbackEnabled="true"
         tools:ignore="ContentDescription,UnusedAttribute" />
-</RelativeLayout>
+</LinearLayout>

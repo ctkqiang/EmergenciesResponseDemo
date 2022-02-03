@@ -583,9 +583,23 @@ public class Application extends AppCompatActivity implements LocationListener, 
         if (item.getItemId() == R.id.action_info)
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(null);
+            builder.setTitle(Application.this.getResources().getString(R.string.this_demo_is_developed_by_john_melody_me));
             View customLayout = getLayoutInflater().inflate(R.layout.custom_alert, null);
             builder.setView(customLayout);
+
+            customLayout.findViewById(R.id.link).setOnClickListener(new View.OnClickListener()
+             {
+                 @Override
+                 public void onClick(View view)
+                 {
+                     Intent browserIntent = new Intent(
+                             Intent.ACTION_VIEW,
+                             Uri.parse(Application.this.getString(R.string.github_project))
+                     );
+
+                     Application.this.startActivity(browserIntent);
+                 }
+             });
 
             ImageButton coffee = (ImageButton) customLayout.findViewById(R.id.buymecoffee);
 
