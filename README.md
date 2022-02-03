@@ -27,3 +27,7 @@ https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:6894671295250857984?co
 [Click to Download the Client App (android)](https://github.com/johnmelodyme/EmergenciesResponseDemo/releases/download/1.1.1/emergencies.apk)
 
 [Click to Download the Monitor App (windows)](https://github.com/johnmelodyme/EmergenciesResponseDemo/releases/download/MonitorApp/EmergenciesDemo-Monitor.zip)
+
+
+#### Buy me a coffee? 
+<a href="https://www.buymeacoffee.com/johnmelodymel" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
